@@ -1,0 +1,1680 @@
+---
+# ***********************************************************
+# Thought Machine Example Values File:
+#  Information:
+#   - Values with defaults are set to their default value and commented out.
+#   - Docstrings are denoted by '#    >' to differentiate them from default values.
+#   - Values without defaults are set to an example value and left uncommented.
+#   - Values can depend on one another using Go templating (with Sprig) of the form `svc_url: '<<¬¬.Values.my.instance.url¬¬>>/svc'`.
+#     We use the custom delimiters `<<¬¬` and `¬¬>>` to prevent clashes with go templates in the values.
+#     Templates will be applied after defaults are merged.
+# ***********************************************************
+
+access_control:
+  db:
+    #    > admin_user - Admin user for the access control database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the access control database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Access Control DB migrator user used for running DB migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"access_control_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: access_control_migrator
+    #    > name - Name of the access control database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: access_control
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username for the access-control database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to match the common name of the
+    #    > \"access_control\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: access_control
+access_control_api:
+  #    > default_permissions_policy - The default OPA policy used when authorising requests made to the Access Control API.
+  # default_permissions_policy: |-
+  #   package access_control_api_permissions
+  #   default allow = false
+  #   allow {
+  #     input.valid_scopes[_] == input.jwt_claims.scp[_]
+  #   }
+  #   allow {
+  #     input.valid_scopes[_] == split(input.jwt_claims.scope, " ")[_]
+  #   }
+  #    > endpoint - The endpoint used for ingress to the access control API
+  endpoint: access-control-api.tm.blx-demo.com
+account:
+  #    > default_denomination - Default denomination to be used for an account. This is the default value if no other
+  #    > denomination is given during account creation.
+  default_denomination: GBP
+  #    > permitted_denominations - The permitted denominations for an account. These are the default values if no other
+  #    > denominations list is provided during account creation.
+  #    > Acceptable values are:
+  #    > ["ZMW","CHE","TZS","DOP","DZD","SOS","XUA","SDG","MKD","NIO","UYU","MXN","RUB","UGX","RSD","COP","CDF","BHD","AWG","MOP","SAR","KES","BBD","XPD","BYR",
+  #    > "PEN","EUR","GNF","DKK","BOV","CVE","MVR","KYD","MWK","BTC","NPR","KHR","SGD","XDR","BWP","SRD","CAD","JPY","USS","ALL","MZN","UYI","KZT","MMK","UZS",
+  #    > "ERN","TOP","TTD","BMD","XFU","ETB","SZL","NGN","HRK","XAF","BND","KRW","SLL","PAB","NZD","HTG","GHS","XAG","OMR","SHP","BDT","GIP","IDR","SCR","RWF",
+  #    > "THB","PHP","AFN","LYD","BIF","LKR","XCD","XBD","SBD","STD","XBB","GMD","PYG","RON","MGA","SSP","AMD","PGK","MXV","XSU","XAU","HKD","CHF","CLP","QAR",
+  #    > "AED","XOF","MUR","TWD","MDL","HNL","KPW","TND","BOB","BAM","BTN","TRY","LRD","SEK","IRR","XBC","JOD","BRL","GTQ","TJS","XTS","FKP","PLN","BGN","AZN",
+  #    > "PKR","VEF","TMT","GYD","YER","VUV","CHW","XPF","BZD","INR","ISK","WST","LSL","FJD","XPT","EGP","CUC","XBA","ILS","MAD","USD","UAH","ZAR","CNY","JMD",
+  #    > "ARS","GBP","NOK","MNT","USN","CRC","AUD","DJF","MRO","SYP","LAK","KWD","KGS","IQD","MYR","CZK","COU","AOA","ANG","NAD","HUF","CLF","KMF","LBP","GEL",
+  #    > "VND","CUP"]
+  permitted_denominations: '["GBP","EUR","CHF","USD","PLN","MYR","VND","HUF"]'
+audit:
+  cleanup:
+    #    > ttl - Length of time to retain audit log entries
+    #    > regex: ^[0-9]+\s(MINUTES|HOURS|DAYS|WEEKS|MONTHS|YEARS)$
+    ttl: 1 DAYS
+  db:
+    #    > admin_user - Admin user for the audit database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the audit database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Audit DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"audit_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: audit_migrator
+    #    > name - Name of the audit database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: audit
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the audit database
+    #    > Note: If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"audit\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: audit
+  #    > endpoint - The endpoint used for ingress to the audit API
+  endpoint: audit-api.tm.blx-demo.com
+  #    > response_payload_size_limits - The configuration used to determine whether the response payload for a particular endpoint is
+  #    > too large to be stored in the database and streamed out over the Audit public streaming API. The
+  #    > value provided should be a JSON object with payload size limits in bytes keyed by the public
+  #    > endpoint to which each limit applies. Note that this configuration does not affect how object
+  #    > IDs are extracted from the response payload. For example:
+  #    > {
+  #    >   "/core_api.v1.posting_instruction_batches.CoreAPIPostingInstructionBatch/ListPostingInstructionBatches":524288
+  #    > }
+  # response_payload_size_limits: |
+  #   {
+  #   }
+  #    > vault_object_type_policies - The policies that must be satisfied for users to be able to view Audit Logs associated with the specified Vault
+  #    > object types. If multiple policies are listed beneath a `vault_object_type`, then at least one must be satisfied by
+  #    > a user for them to view Audit Logs associated with the Vault object type.
+  #    > This value should be given as a string of valid YAML.
+  #    > accepted_type: string
+  vault_object_type_policies: |
+    default:
+      - "default_audit_view"
+audit_api:
+  #    > default_permissions_policy - The default OPA policy used when authorising requests made to the Audit API.
+  # default_permissions_policy: |-
+  #   package audit_api_permissions
+  #   default allow = false
+  #   allow {
+  #     input.valid_scopes[_] == input.jwt_claims.scp[_]
+  #   }
+  #   allow {
+  #     input.valid_scopes[_] == split(input.jwt_claims.scope, " ")[_]
+  #   }
+auth:
+  #    > service_account_cache_size - The size of the cache used for storing validated service account tokens. The cryptographic
+  #    > operations used during authentication require a lot of memory and CPU resources to validate
+  #    > service account tokens. The results of cryptographic operations can be cached to provide
+  #    > additional performance. This value corresponds to the number of valid service account tokens
+  #    > stored in the cache.
+  #    > regex: ^[1-9]\d+$|^\d$
+  # service_account_cache_size: "200"
+balances:
+  db:
+    #    > admin_user - Admin user for the balances database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the balances database.
+    #    > Warning: This section should ONLY be populated if using a separate physical db for balances. The DB host should be different to all the other *.db.host sections of this file. For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for balances.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Balances DB migrator user used for running db migrations
+    #    > Warning: This section should ONLY be populated if using a separate physical db for balances. The DB host should be different to all the other *.db.host sections of this file. For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for balances.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"vault_balance_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: <<¬¬ .Values.vault.db.migrator_user ¬¬>>
+    #    > name - Name of the Balances database
+    #    > Warning: This section should ONLY be populated if using a separate physical db for balances. The DB host should be different to all the other *.db.host sections of this file. For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for balances.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: <<¬¬ .Values.vault.db.name | quote ¬¬>>
+    #    > port - Database port to connect to.
+    #    > Warning: For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for balances.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the balances database
+    #    > Warning: This section should ONLY be populated if using a separate physical db for balances. The DB host should be different to all the other *.db.host sections of this file. For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for balances.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"vault_balance\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: <<¬¬ .Values.vault.db.user ¬¬>>
+bearer_auth:
+  #    > jwks_refresh_period - The refresh period for the JWKS cache.
+  #    > regex: ^[1-9][0-9]*[hms]$
+  # jwks_refresh_period: 168h
+  #    > jwks_uri - The JWKS URI to fetch the JWKS from.
+  # jwks_uri: ""
+  #    > max_token_lifetime - Maximum JSON Web Token lifetime.
+  #    > regex: ^[1-9][0-9]*[hms]$
+  # max_token_lifetime: 24h
+  #    > static_public_keys - The configuration used to load public keys from Vault's secret store. These keys are used for
+  #    > authentication.
+  # static_public_keys: |
+  #   [
+  #   ]
+# bottomline:
+#   #    > instructing_bank_code - The 6-digit code of the instructing bank, used by Bottomline for outbound FPS payments
+#   instructing_bank_code: "123456"
+#   #    > instructing_bank_name - The name of the instructing bank, used by Bottomline for outbound FPS payments
+#   instructing_bank_name: Test Bank
+calendar:
+  db:
+    #    > admin_user - Admin user for the calendar database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the calendar database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Calendar DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"calendar_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: calendar_migrator
+    #    > name - Name of the calendar database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: calendar
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the calendar database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"calendar\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: calendar
+calendar_schedules:
+  db:
+    #    > admin_user - Admin user for the calendar schedules database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the calendar schedules database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Calendar Schedules DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"calendar_schedules_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: calendar_schedules_migrator
+    #    > name - Name of the calendar schedules database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: calendar_schedules
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the calendar schedules database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"calendar_schedules\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: calendar_schedules
+clusterstat:
+  #    > run_labels - Comma-separated list of labels to run clusterstat tests with.
+  #    > Valid values are: hault, monitoring, namespaced_monitoring or all.
+  # run_labels: all
+# cockroachdb:
+#   ca_rotation:
+#     #    > schedule - Schedule for running the cockroachdb CA rotation job in cron format.
+#     #    > Ignored if cockroachdb-ca-rotation-pkg not deployed.
+#     #    > WARNING: Make sure not to schedule for the same time as certificate rotation in the cockroachdb-cert-rotation-pkg, this may lead to unexpected behaviour.
+#     # schedule: 0 0 15 1 *
+#   cert_rotation:
+#     #    > schedule - Schedule for running the cockroachdb certificate rotation job in cron format.
+#     #    > Ignored if cockroachdb-cert-rotation-pkg not deployed.
+#     # schedule: 0 0 1 * *
+common:
+  bank:
+    #    > name - The identifier for this bank. Must not start with a capital letter or have spaces between
+    #    > characters. Must NOT be changed after installing Vault.
+    #    > regex: ^[a-z][A-Za-z0-9\-]+$
+    name: banklitex
+    #    > sort_code - Sort code for the bank
+    #    > regex: ^[0-9]{2}-[0-9]{2}-[0-9]{2}$
+    sort_code: 10-00-00
+  basic_auth:
+    #    > authentication - To enable or disable basic authentication. If enabled; user, password and password salted hash values are expected
+    #    > accepted_values:
+    #    > - enable
+    #    > - disable
+    authentication: disable
+    #    > password_hash - Hash for the above password - should be generated using a command similar to the following:
+    #    >   openssl passwd -apr1 -salt vault topsecret
+    password_hash: TBA
+    #    > password - Password for basic auth credentials applied to ingress.
+    #    > Used to restrict access to Vault instances in dev/test environments.
+    password: TBA
+    #    > username - Username for basic auth credentials applied to ingress.
+    #    > Used to restrict access to Vault instances in dev/test environments.
+    username: TBA
+  db:
+    pool:
+      #    > enabled - Enable DB connection pooler. Must be set to "true" unless specifically advised otherwise by TM production support.
+      #    > The DB connection pooler is a database connection proxy that sits between Vault Core services and the database.
+      #    > It optimises the number of database connections being used at any one time and improves recovery speed in the event
+      #    > of a database failover.
+      #    > accepted_values:
+      #    > - "true"
+      #    > - "false"
+      # enabled: "true"
+    #    > ssl - Use SSL when connecting to the database.
+    #    > accepted_values:
+    #    > - "true"
+    #    > - "false"
+    # ssl: "true"
+    #    > ssl_mode - The postgres SSL mode to use when connecting to the database, for all services.
+    #    > For more details, see the Postgres documentation:
+    #    > https://www.postgresql.org/docs/current/libpq-ssl.html
+    #    > Note that 'allow' and 'prefer' are not supported.
+    #    > accepted_values:
+    #    > - disable
+    #    > - require
+    #    > - verify-ca
+    #    > - verify-full
+    # ssl_mode: verify-full
+    #    > use_username_hostname_format - Reformat the db username as 'user@host' when establishing a connection. Azure Psql requires this.
+    #    > accepted_values:
+    #    > - "true"
+    #    > - "false"
+    # use_username_hostname_format: "false"
+  #    > deployment_size - This deployment size parameter is used across Vault to configure a set of parameters to soft tune vault to that specific deployment size.
+  #    > This includes setting min and max replicas of a variety of most deployments, setting a scheduler rate limit and adjusting db pooler max connections.
+  #    > The accepted values follow the Vault Performance framework.
+  #    > accepted_values:
+  #    > - small
+  #    > - medium
+  #    > - medium-large
+  deployment_size: small
+  services:
+    #    > domain - The exclusive domain or subdomain name which contains all subdomains used for Vault endpoints
+    #    > protected by SAML in an instance.
+    #    > Only Vault Applications protected by SAML should be placed under this domain as cookies set
+    #    > on this domain will be exposed to all subdomains.
+    #    > The protocol and port number must be omitted. For example, if the following websites are
+    #    > to be protected by SAML: ops.example.com, coreapps.example.com then the value must be
+    #    > example.com. For multiple instances on the same domain a unique subdomain must be provided.
+    #    > For example, for ops.dev.example.com and ops.staging.example.com the dev instance must be
+    #    > set to dev.example.com and the staging instance must be staging.example.com
+    #    > regex: ^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$
+    domain: tm.blx-demo.com
+common_stream_api:
+  #    > message_format - The format of public topic messages consumed or produced by the Streaming API
+  #    > accepted_values:
+  #    > - json
+  #    > - protobuf
+  message_format: json
+configuration_layer:
+  importer:
+    #    > use_jwt - Resources are applied to the configuration layer during installation by an embedded version of the Configuration
+    #    > Layer Utility. Set this option true if JWTs are being provided for API authentication or false to use a service
+    #    > token for embedded access.
+    #    > accepted_values:
+    #    > - "true"
+    #    > - "false"
+    # use_jwt: "false"
+contract_db_data_exporter:
+  #    > publish_interval - Controls how frequently a check is made for any new data to be published to
+  #    > `vault.api.v1.products.product_version.created` and
+  #    > `vault.api.v1.products.product_version.parameter.updated` topics. The clock for the next check
+  #    > starts running after all new data has been published. The value can be any "duration string" as
+  #    > is understood by https://golang.org/pkg/time/#ParseDuration.
+  #    > Prior to Vault 5.0, one of the queries results in a sequential scan of a table containing all
+  #    > instance parameter values, so this interval should not be decreased from its default without testing
+  #    > its effects on overall DB performance. From Vault 5.0 the query is still executed, but the table
+  #    > no longer contains instance parameters, only template, which are significantly fewer in number.
+  # publish_interval: 3h
+contract_executor:
+  #    > size - Determines how many replicas are deployed as a minimum. This is to ensure Vault can maintain the
+  #    > SLOs for online journeys. For production environments with high volumes this should be set to
+  #    > "medium", for lower volumes "small" should suffice and if no SLOs need to be honoured "demo".
+  #    > accepted_values:
+  #    > - medium
+  #    > - small
+  #    > - demo
+  size: demo
+core:
+  db:
+    #    > admin_user - Admin user for the core database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the core database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - User used to execute Vault Core migrations.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"core_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: core_migrator
+    #    > name - Name of the core database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: core
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username for the core database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"core\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: core
+  #    > endpoint - The endpoint used for ingress to the core API
+  endpoint: core-api.tm.blx-demo.com
+core_api:
+  #    > default_permissions_policy - The default OPA policy used when authorising requests made to the Core API.
+  # default_permissions_policy: |-
+  #   package core_api_permissions
+  #   default allow = false
+  #   allow {
+  #     input.valid_scopes[_] == input.jwt_claims.scp[_]
+  #   }
+  #   allow {
+  #     input.valid_scopes[_] == split(input.jwt_claims.scope, " ")[_]
+  #   }
+core_apps:
+  #    > endpoint - The endpoint used for ingress to the Core web apps (not including Ops Dashboard which has it's own endpoint).
+  #    > This must be a subdomain of common.services.domain and not contain a port number. Cookies can only be set on the
+  #    > domain a request is made from.
+  #    > This implies that all SAML protected websites must be part of the same domain.
+  #    > (https://tools.ietf.org/html/rfc6265#section-4.1.2.3)
+  endpoint: coreapps.tm.blx-demo.com
+data_loader:
+  db:
+    #    > admin_user - Admin user for the data loader database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the data loader database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Data Loader DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"data_loader_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: data_loader_migrator
+    #    > name - Name of the data loader database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: data_loader
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the data loader database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"data_loader\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: data_loader
+data_loader_api:
+  #    > default_permissions_policy - The default OPA policy used when authorising requests made to the Data Loader API.
+  # default_permissions_policy: |
+  #   package data_loader_api_permissions
+  #   default allow = false
+  #   allow {
+  #     input.valid_scopes[_] == input.jwt_claims.scp[_]
+  #   }
+  #   allow {
+  #     input.valid_scopes[_] == split(input.jwt_claims.scope, " ")[_]
+  #   }
+  #    > endpoint - The endpoint used for ingress to the data loader API
+  endpoint: data-loader-api.tm.blx-demo.com
+  #    > message_format - The format of public topic messages consumed or produced by the data loader stream API
+  #    > accepted_values:
+  #    > - json
+  #    > - protobuf
+  # message_format: protobuf
+documentation:
+  #    > endpoint - The endpoint used for ingress to the documentation for vault APIs
+  endpoint: documentation.tm.blx-demo.com
+documents:
+  #    > endpoint - The endpoint used for ingress to the documents service
+  endpoint: documents.tm.blx-demo.com
+  #    > port - Port that the documents service should listen on
+  port: "443"
+eplatform:
+  db:
+    #    > admin_user - Admin user for the eplatform database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the eplatform database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Eplatform DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"eplatform_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: eplatform_migrator
+    #    > name - Name of the eplatform database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: eplatform
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the eplatform database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"eplatform\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: eplatform
+experience_layer_api:
+  #    > default_permissions_policy - The default OPA policy used when authorising requests made to the Experience Layer API.
+  # default_permissions_policy: |-
+  #   package experience_layer_api_permissions
+  #   default allow = false
+  #   allow {
+  #     input.valid_scopes[_] == input.jwt_claims.scp[_]
+  #   }
+  #   allow {
+  #     input.valid_scopes[_] == split(input.jwt_claims.scope, " ")[_]
+  #   }
+integrations:
+  db:
+    #    > admin_user - Admin user for the integrations database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the integrations database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Integrations DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"integrations_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: integrations_migrator
+    #    > name - Name of the integrations database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: integrations
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the integrations database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"integrations\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: integrations
+istio:
+  auth_policy:
+    #    > mtls_mode - Mutual TLS mode to use for istio
+    #    > accepted_values:
+    #    > - PERMISSIVE
+    #    > - STRICT
+    mtls_mode: STRICT
+  #    > jwtPolicy - Sets whether Istio uses third-party JWT tokens for authentication between mesh proxies and the control
+  #    > plane; third-party-jwt is preferred as it is the more secure option. Using first-party-jwt must only be
+  #    > done if the cluster explicitly does not support third-party-jwt.
+  #    > accepted_values:
+  #    > - third-party-jwt
+  #    > - first-party-jwt
+  # jwtPolicy: third-party-jwt
+  #    > namespace - The namespace where the Istio control-plane is deployed. Once used for one Istio version
+  #    > this option MUST remain the same for all subsequent installations. Istio must NEVER be
+  #    > installed in multiple namespaces on the same cluster.
+  #    > This value, if set explicitly, will also affect the TM monitoring stack; in this case the
+  #    > following requirements must be satisfied. A service must exist in the istio.namespace
+  #    > namespace and must expose Istiod metrics on a http-monitoring port. Similarly for Envoy
+  #    > generated metrics, pods are expected expose a container port http-envoy-prom exposing Envoy
+  #    > metrics.
+  # namespace: istio-system
+  proxy:
+    #    > exclude_cidr - List of comma-separated CIDR ranges to exclude from the istio proxy (empty string for none or "*" for all ranges).
+    #    > Note: When using the Istio CNI, this must include the CIDR range required to access the secrets manager. Communication
+    #    > to hosts in these IP ranges will not be intercepted and routed via Istio proxy. Care must be taken here to ensure
+    #    > communication is not incorrectly excluded from Istio. For example, the secrets manager must be excluded from Istio
+    #    > but pod subnets must not be.
+    # exclude_cidr: ""
+    #    > exclude_outbound_ports - List of comma-separated ports to exclude from the service mesh (empty string for none).
+    #    > Outbound communication on listed ports will not be intercepted via the proxy and will be routed directly to the
+    #    > container.
+    #    > Note: This must exclude the database port(s) in use to manage database traffic when the Istio
+    #    > outbound traffic policy is set to REGISTRY_ONLY. It is set to exclude '5432' by default.
+    #    > This list must not include the broker ports specified in kafka.client.brokers, as they will be
+    #    > excluded automatically.
+    # exclude_outbound_ports: "5432"
+    #    > include_cidr - List of comma-separated CIDR ranges to include for the istio proxy (empty string for none or "*" for all ranges)
+    # include_cidr: '*'
+k8s:
+  #    > cloud_provider - The cloud provider of the kubernetes cluster. Note: This was previously set automatically
+  #    > by the TMComponent operator. This is no longer the case, and now it must be set here.
+  #    > accepted_values:
+  #    > - aws
+  #    > - gcp
+  #    > - azure
+  #    > - ""
+  cloud_provider: aws
+  #    > distribution - The distribution of the kubernetes cluster.
+  #    > accepted_values:
+  #    > - gke
+  #    > - eks
+  #    > - aks
+  #    > - openshift
+  #    > - microk8s
+  #    > - k3s
+  #    > - minikube
+  #    > - ""
+  # distribution: <<¬¬ if eq .Values.k8s.cloud_provider "aws" ¬¬>>eks<<¬¬ else if eq .Values.k8s.cloud_provider
+  #   "gcp" ¬¬>>gke<<¬¬ else if eq .Values.k8s.cloud_provider "azure" ¬¬>>aks<<¬¬ else
+  #   ¬¬>>''<<¬¬ end ¬¬>>
+  #    > docker_registry_path - Path to the docker registry used for all Docker images. Note: This was previously set automatically
+  #    > by the TMComponent operator. This is no longer the case, and now it must be set here.
+  #    > No trailing '/' is allowed.
+  #    > regex: ^$|^.*[^\/]$
+  docker_registry_path: 766697957974.dkr.ecr.eu-central-1.amazonaws.com/3rdparty/tm
+  #    > image_pull_secrets_name - Name of the Kubernetes secret that contains the credentials to pull images from a private Docker registry.
+  #    > It is optional and only used for private docker registry.
+  #    > accepted_type: string
+  # image_pull_secrets_name: ""
+  ingress:
+    access_control:
+      #    > annotations - Annotations to apply only to the access control kubernetes ingress object. The values here are examples for the
+      #    > Nginx ingress controller:
+      #    > annotations:
+      #    >   nginx.ingress.kubernetes.io/service-upstream: 'true'
+      #    >   nginx.ingress.kubernetes.io/upstream-vhost: access-control-api-gateway.k8s-namespace.svc.cluster.local
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the access control Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-access-control-ingress-cert
+    #    > annotations - Annotations to apply to all of the kubernetes ingress objects - the values here are example for the
+    #    > Nginx ingress controller
+    annotations:
+      # cert-manager.io/acme-challenge-type: dns01
+      # cert-manager.io/acme-dns01-provider: instances
+      # cert-manager.io/cluster-issuer: lets-encrypt
+      # kubernetes.io/ingress.class: nginx-internal
+      # nginx.ingress.kubernetes.io/proxy-connect-timeout: 36s
+      # nginx.ingress.kubernetes.io/proxy-read-timeout: 600s
+      # tmachine.io/dns.class: private
+    audit:
+      #    > annotations - Annotations to apply only to the audit kubernetes ingress object - the values here are example for the
+      #    > Nginx ingress controller
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the audit Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-audit-ingress-cert
+    core:
+      #    > annotations - Annotations to apply only to the core kubernetes ingress object - the values here are example for the
+      #    > Nginx ingress controller
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the core Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-core-ingress-cert
+    core_apps:
+      #    > annotations - Annotations to apply only to the core-apps kubernetes ingress object. The values
+      #    > here are examples for the Nginx ingress controller:
+      #    > annotations:
+      #    >   nginx.ingress.kubernetes.io/service-upstream: 'true'
+      #    >   nginx.ingress.kubernetes.io/upstream-vhost: core-apps.k8s-namespace.svc.cluster.local
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the Core Apps Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-core-apps-ingress-cert
+    data_loader:
+      #    > annotations - Annotations to apply only to the data loader kubernetes ingress object - the values here are example for the
+      #    > Nginx ingress controller
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the data loader Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-data-loader-ingress-cert
+    documentation:
+      #    > annotations - Annotations to apply only to the documentation kubernetes ingress object - the values here are example for the
+      #    > Nginx ingress controller
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the documentation Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-documentation-ingress-cert
+    documents:
+      #    > annotations - Annotations to apply only to the documents kubernetes ingress object - the values here are example for the
+      #    > Nginx ingress controller
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the documents Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-documents-ingress-cert
+    #    > labels - Labels to apply to kubernetes ingress objects.
+    labels:
+      cert-manager.io/provider: instances
+    ops:
+      vault_admin_website:
+        #    > annotations - Annotations to apply only to the ops vault-admin-website kubernetes ingress object - the values
+        #    > here are examples for the Nginx ingress controller which would be required in the scenario
+        #    > where Istio service mesh is used with strict mTLS peer authentication.
+        #    > annotations:
+        #    >   nginx.ingress.kubernetes.io/service-upstream: 'true'
+        #    >   nginx.ingress.kubernetes.io/upstream-vhost: vault-admin-website.k8s-namespace.svc.cluster.local
+        # annotations: {}
+        #    > tls_secret_name - The name of the Kubernetes secret the ops vault-admin-website Ingress uses to secure traffic. This is optional as it has a default.
+        # tls_secret_name: vault-ops-vault-admin-website-ingress-cert
+    payments_hub:
+      #    > annotations - Annotations to apply only to the payments hub kubernetes ingress object - the values here are example for the
+      #    > Nginx ingress controller
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the payments hub Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-payments-hub-ingress-cert
+    saml_idp:
+      #    > annotations - Annotations to apply only to the SAML IdP kubernetes ingress object - the values here are example for the
+      #    > Nginx ingress controller
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the SAML IdP Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-saml-idp-ingress-cert
+    workflows:
+      #    > annotations - Annotations to apply only to the workflows kubernetes ingress object - the values here are example for the
+      #    > Nginx ingress controller
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the workflows Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-workflows-ingress-cert
+    xpl:
+      #    > annotations - Annotations to apply only to the xpl kubernetes ingress object - the values here are example for the
+      #    > Nginx ingress controller
+      # annotations: {}
+      #    > tls_secret_name - The name of the Kubernetes secret the xpl Ingress uses to secure traffic. This is optional as it has a default.
+      # tls_secret_name: vault-xpl-ingress-cert
+  #    > namespace - The kubernetes namespace that this vault instance will be deployed to
+  namespace: tm-vault
+  #    > pull_image_by_digest - IMPORTANT!! Disable this field if using the docker or podman CLI to copy images to your private registry as
+  #    > 'pull+tag+push' will not preserve the original digests.
+  #    > When enabled, reference images by digest instead of semantic tag in kubernetes manifests. This
+  #    > expects the registry used with this workload to honour the original image digests. Tools such as
+  #    > 'skopeo' and 'crane' will preserve digests when copying images but the docker or podman CLI will not.
+  #    > accepted_type: bool
+  # pull_image_by_digest: true
+kafka:
+  ca_rotation:
+    #    > schedule - Schedule for running the kafka CA rotation job in cron format.
+    #    > Ignored if kafka-ca-rotation-pkg not deployed.
+    #    > WARNING: Make sure not to schedule for the same time as certificate rotation in the kafka-cert-rotation-pkg, this may lead to unexpected behaviour.
+    # schedule: 0 0 15 1 *
+  cert_rotation:
+    #    > schedule - Schedule for running the kafka certificate rotation job in cron format.
+    #    > Ignored if kafka-cert-rotation-pkg not deployed.
+    # schedule: 0 0 1 * *
+  client:
+    #    > auth_mechanism - Set the authentication mechanism for Kafka brokers. If not set to "none", kafka.client.disable_ssl must be set to false.
+    #    > accepted_values:
+    #    > - mtls
+    #    > - scram-sha-256
+    #    > - scram-sha-512
+    #    > - oauth
+    #    > - none
+    auth_mechanism: scram-sha-512
+    #    > brokers - Bootstrap Broker Address(es)
+    brokers: b-3.tmkafka.pih9xm.c2.kafka.eu-central-1.amazonaws.com:9096,b-2.tmkafka.pih9xm.c2.kafka.eu-central-1.amazonaws.com:9096,b-1.tmkafka.pih9xm.c2.kafka.eu-central-1.amazonaws.com:9096
+    #    > disable_ssl - Set to true to disable SSL for Kafka client to broker communications
+    #    > accepted_values:
+    #    > - "true"
+    #    > - "false"
+    disable_ssl: "false"
+    oauth:
+      #    > auth_method - Set the method for authenticating with the OAuth server.
+      #    > This determines where the client ID and client secret go in access token requests.
+      #    > With 'basic-auth', the client credentials are encoded and sent in the request header as per the HTTP Basic authentication scheme (RFC2617).
+      #    > With 'request-body', the client credentials are sent as the parameters "client_id" and "client_secret" in the request body.
+      #    > Optional.
+      #    > accepted_values:
+      #    > - basic-auth
+      #    > - request-body
+      # auth_method: basic-auth
+      #    > auth_server_endpoint - Set the OAuth server endpoint for access token retrieval.
+      # auth_server_endpoint: ""
+      #    > extensions - Set SASL extensions to be communicated with the Kafka broker during SASL/OAUTHBEARER authentication.
+      #    > This must be a valid JSON string with keys and values following RFC7628 Section 3.1 syntax. Optional.
+      # extensions: ""
+      istio:
+        #    > host_entry - Set the OAuth server hostname to be added to the service mesh.
+        #    > Warning: The hostname is templated into a ServiceEntry resource and must be an FQDN. This value must be set if you are using OAuth.
+        # host_entry: ""
+        #    > host_port - Set the OAuth server port to be added into the service mesh.
+        #    > Warning:  This value must be set if you are using OAuth.
+        # host_port: "443"
+        #    > host_port_protocol - Set the OAuth server port protocol the clients will connect to the server over.
+        #    > Warning:  This value must be set if you are using OAuth.
+        #    > accepted_values:
+        #    > - HTTPS
+        #    > - HTTP
+        #    > - TCP
+        # host_port_protocol: HTTPS
+      #    > scopes - Set any scopes to be passed to the OAuth server when clients request access tokens.
+      #    > This must be a space separated list. Optional.
+      # scopes: ""
+    #    > ssl_subject - Set the SSL Subject name that will be used when generating Kafka ACLs. The Subject (aka X.500 Distinguished Name)
+    #    > must match the format: 'OU=<organizationUnit>,O=<organizationName>,L=<localityName>,ST=<stateName>,C=<country>',
+    #    > where the Common Name (CN) should be excluded as it will differ between each service. This only needs to be set
+    #    > when mTLS is selected as the auth mechanism and the Vault Installer is not used to generate service certificates.
+    # ssl_subject: OU=vault,O=Thought Machine Ltd,L=London,ST=Greater London,C=GB
+    #    > use_system_ca - Set to true to use the System CA/truststore for Kafka client to broker communications over SSL
+    #    > accepted_values:
+    #    > - "true"
+    #    > - "false"
+    use_system_ca: "true"
+  monitoring:
+    #    > disable_consumer_lag_exporter - Disable the consumer lag exporter.
+    #    > Warning: Vault Kafka processors scale based on consumer lag metrics.
+    #    > Disabling the exporter means that the Kafka processors will only scale based on CPU and memory usage.
+    #    > An alternative solution is to pin all Kafka processors to the maximum replicas count.
+    #    > accepted_values:
+    #    > - "true"
+    #    > - "false"
+    # disable_consumer_lag_exporter: "false"
+  topics:
+    #    > disable_topic_reconciliation - Disable ongoing Kafka topics reconciliation and partition count changes in Vault topic manager.
+    #    > Once the topics are created and configured, the topic manager will not maintain the settings.
+    #    > This option may be useful if the privileges required to manage topics are only to be assigned to
+    #    > Vault during installation, or if the number of partitions are manually reduced for cost-saving,
+    #    > for example in development environments.
+    #    > Note:  Disabling Kafka topics reconciliation means changes in partition count in new Vault
+    #    > releases will not be automatically applied. If the partition count is reduced in the standard
+    #    > configuration, this could result in increased costs when reconciliation is disabled.
+    #    > Warning: This flag must be set if the Kafka brokers do not support ACLs.
+    #    > accepted_values:
+    #    > - true
+    #    > - false
+    # disable_topic_reconciliation: false
+    #    > disable_vault_topic_management - Disable ALL topic management by Vault. This may be set to "true" if Kafka topics are to be
+    #    > created and configured separately - for example if the Kafka provider doesn't support Vault's
+    #    > automatic management. The Vault release package includes details of the topic configuration
+    #    > for use in this scenario.
+    #    > Warning: This flag must NOT be set if it is desired for Vault to automatically create, update
+    #    > and delete Kafka topics.
+    #    > accepted_values:
+    #    > - true
+    #    > - false
+    # disable_vault_topic_management: false
+    #    > exclude_payments_hub_topics - Do not create Payments Hub topics or delete any existing ones.
+    #    > Note: You must not deploy any of the PaymentsHub packages as these will start failing
+    #    > due to the missing topics.
+    #    > Warning: Any existing data for these topics will be deleted. Only enable this flag if
+    #    > Payments Hub is not used within the environment. Disabling topic reconciliation does not
+    #    > disable the functionality behind this flag.
+    #    > accepted_values:
+    #    > - true
+    #    > - false
+    # exclude_payments_hub_topics: true
+    #    > exclude_workflows_topics - Do not create Workflows topics or delete any existing ones.
+    #    > Note: This option must be set to "false" if the Workflow services are packaged in the Vault Core component.
+    #    > If packaged in a separate component that is not installed then this flag may be set to "true" to omit the
+    #    > Workflow-related topics.
+    #    > Warning: Any existing data for these topics will be deleted. Only enable this flag if
+    #    > Workflows packages are not used within the environment. Disabling topic reconciliation does not
+    #    > disable the functionality behind this flag.
+    #    > accepted_values:
+    #    > - true
+    #    > - false
+    # exclude_workflows_topics: false
+    #    > exclude_xpl_topics - Do not create XPL topics or delete any existing ones.
+    #    > Note: You must not deploy any of the XPL packages as these will start failing
+    #    > due to the missing topics.
+    #    > Warning: Any existing data for these topics will be deleted. Only enable this flag if
+    #    > XPL packages are not used within the environment. Disabling topic reconciliation does not
+    #    > disable the functionality behind this flag.
+    #    > accepted_values:
+    #    > - true
+    #    > - false
+    exclude_xpl_topics: true
+ledger_balances:
+  db:
+    #    > admin_user - Admin user for the ledger_balances database (used for schema initialisation)
+    #    > Warning: For Vault versions instances created <3.0.1 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=3.0.1 the value can be different if using a separate physical db for ledger_balances.
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the balances database
+    #    > Warning: This section should ONLY be populated if using a separate physical db for ledger_balances. The DB host should be different to all the other *.db.host sections of this file. For Vault versions instances created <3.0.1 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=3.0.1 the value can be different if using a separate physical db for ledger_balances.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Ledger balances DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided
+    #    > Warning: For Vault versions instances created <3.0.1 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=3.0.1 the value can be different if using a separate physical db for ledger_balances.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: <<¬¬ .Values.vault.db.migrator_user ¬¬>>
+    #    > name - Name of the ledger balances database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided
+    #    > Warning: For Vault versions instances created <3.0.1 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=3.0.1 the value can be different if using a separate physical db for ledger_balances.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: <<¬¬ .Values.vault.db.name | quote ¬¬>>
+    #    > port - Database port to connect to.
+    #    > Warning: For Vault versions instances created <3.0.1 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=3.0.1 the value can be different if using a separate physical db for ledger_balances.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the ledger balances database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"vault_ledger_balances\" principal, which can be found in the release.json file.
+    #    > Warning: For Vault versions instances created <3.0.1 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=3.0.1 the value can be different if using a separate physical db for ledger_balances.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: <<¬¬ .Values.vault.db.user ¬¬>>
+observability:
+  alertmanager:
+    #    > config_yml - Alertmanager config file - schema here: https://prometheus.io/docs/alerting/latest/configuration/
+    #    > Secrets placed in Hashicorp Vault under secrets/<monitoring_namespace>/alertmanager can be referenced here.
+    #    > See example below and Observability Stack Installation and User Guide for more details.
+    # config_yml: |
+    #   receivers:
+    #     - name: default-receiver
+    #   route:
+    #     receiver: 'default-receiver'
+    #     group_by: [alertname, kubernetes_namespace]
+    #    > storageclass - The Kubernetes StorageClass to be used by Alertmanager volumes. Please note Kubernetes StorageClasses
+    #    > are immutable objects and do not reconcile seamlessly.
+    #    > regex: ^[0-9a-z]+[-0-9a-z]*[0-9a-z]+$
+    # storageclass: general-encrypted
+  #    > cluster_name - Cluster name for observability functionality - used by monitoring components.
+  #    > This variable will control the kubernetes_cluster metrics label,
+  #    > e.g. for the Cluster dropdown in Grafana dashboards.
+  #    > It is recommended to use the cluster's short name or nickname.
+  #    > Note: No spaces are allowed in this value and it can not be left empty
+  #    > regex: ^\S+$
+  cluster_name: sandbox-tm
+  cluster_prometheus:
+    cardinality:
+      storage:
+        #    > size - Persistent storage size allocated for Prometheus Cardinality, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 4Gi
+    cloud:
+      storage:
+        #    > size - Persistent storage size allocated for Prometheus Cloud, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 25Gi
+    istio:
+      storage:
+        #    > size - Persistent storage size allocated for Prometheus Istio, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 25Gi
+    kubelet:
+      storage:
+        #    > size - Persistent storage size allocated for Prometheus Kubelet, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 25Gi
+    kubernetes:
+      storage:
+        #    > size - Persistent storage size allocated for Prometheus Kubernetes, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 35Gi
+    #    > remote_write - Expects a list of remoteWrite configurations for cluster level Prometheus instances.
+    #    > Please check Prometheus Operator documentation on RemoteWriteSpec.
+    #    > accepted_type: array
+    # remote_write: []
+    #    > replicas - The number of replicas for Cluster Prometheus instances.
+    #    > Use 2 or 3 for High Availability.
+    #    > This value should be less than or equal to the number
+    #    > of Availability Zones of the cluster.
+    #    > accepted_values:
+    #    > - 1
+    #    > - 2
+    #    > - 3
+    # replicas: 1
+    #    > retention - Retention for all cluster prometheus instances, in days or weeks.
+    #    > If you increase the retention, please adjust storage size as well, otherwise
+    #    > Prometheus will start removing old storage blocks to avoid running out of disk space.
+    #    > regex: ^[1-9][0-9]{0,3}(d|w)$
+    # retention: 2w
+  #    > cluster_size - The size of the cluster to be monitored; this value is used to adjust resources for Observability services.
+  #    > Most installations will need the default setting ('medium').
+  #    > TM Support may advise changing this value in certain cases.
+  #    > Increasing this value will require more CPU and Memory and will increase costs.
+  #    > accepted_values:
+  #    > - local
+  #    > - small
+  #    > - medium
+  #    > - large
+  cluster_size: local
+  grafana:
+    #    > auth_anonymous_enabled - Enable anonymous access to Grafana
+    #    > accepted_values:
+    #    > - "true"
+    #    > - "false"
+    # auth_anonymous_enabled: "false"
+    #    > auth_anonymous_org_name - Organisation name to use when setting up Grafana
+    # auth_anonymous_org_name: Main Org.
+    #    > auth_anonymous_org_role - Role to assign to the organisation in Grafana. Default is Viewer, can also be set to Editor to elevate permissions.
+    #    > accepted_values:
+    #    > - Viewer
+    #    > - Editor
+    # auth_anonymous_org_role: Viewer
+    #    > caAuth - Set this value to true if you want to configure CA authentication for the configured datasource
+    #    > accepted_values:
+    #    > - "false"
+    #    > - "true"
+    # caAuth: "false"
+    #    > caCert - In case caAuth parameter is set to true, the value of this field will be used as the certificate used for authentication. ATTENTION: CERTIFICATE HAS TO BE IN A SINGLE LINE
+    caCert: '-----BEGIN CERTIFICATE-----QKEQWKLEQWKELQWKELQWKEL131231ASMD/SAMD/SAMCZXNcMZXNCASDASD434534KASMDAMWQEQWK-----END      CERTIFICATE-----'
+    #    > security_admin_user - Username for the default admin user for Grafana
+    # security_admin_user: vault
+  ingress:
+    #    > domain - Subdomain to use for all observability services in ingress. Internally, this should be in the form "clustername.internal.domain"
+    domain: observability.tm.blx-demo.com
+    #    > labels - Labels to apply to the ingress for observability services
+    labels:
+      cert-manager.io/provider: instances
+    #    > monitoring-annotations - Annotations to apply to the ingress for observability services
+    monitoring-annotations:
+    #   kubernetes.io/ingress.class: nginx-internal
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/backend-protocol: HTTP
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-central-1:304319179974:certificate/b908622d-218e-4183-979a-ffc2e37e318a
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+      alb.ingress.kubernetes.io/ssl-redirect: '443'
+      alb.ingress.kubernetes.io/success-codes: 200-399
+      alb.ingress.kubernetes.io/security-groups: sg-0d6724172789fd4a9
+      alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-FS-1-2-Res-2019-08
+      alb.ingress.kubernetes.io/subnets: subnet-092970d95ab804e3d, subnet-08013d4a66974c888, subnet-069f6c9066225b231
+      alb.ingress.kubernetes.io/wafv2-acl-arn: arn:aws:wafv2:eu-central-1:304319179974:regional/webacl/sandbox-tm-monitoring/c7f4958d-5bf3-4282-a929-6ee4eedadef4
+      alb.ingress.kubernetes.io/target-type: ip
+    #   tmachine.io/dns.class: private
+    #    > monitoring_tls_secretname - The name of the TLS secret for the monitoring namespace
+    # monitoring_tls_secretname: tm-monitoring-ingress-cert
+  #    > monitoring_namespace - The kubernetes namespace to install observability monitoring into
+  # monitoring_namespace: tm-monitoring
+  namespaced_prometheus:
+    envoy:
+      storage:
+        #    > size - Persistent storage size allocated for Prometheus Envoy, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 30Gi
+    kafka:
+      storage:
+        #    > size - Persistent storage size allocated for Prometheus Kafka, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 20Gi
+    kubelet:
+      storage:
+        #    > size - Persistent storage size allocated for Namespaced Prometheus
+        #    > Kubelet, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 25Gi
+    kubernetes:
+      storage:
+        #    > size - Persistent storage size allocated for Namespaced Prometheus
+        #    > Kubernetes, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 25Gi
+    postgres:
+      storage:
+        #    > size - Persistent storage size allocated for Prometheus Postgres, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 10Gi
+    #    > remote_write - Expects a list of remoteWrite configurations for Namespaces Prometheus instances.
+    #    > Please check Prometheus Operator documentation on RemoteWriteSpec.
+    #    > accepted_type: array
+    # remote_write: <<¬¬ .Values.observability.cluster_prometheus.remote_write ¬¬>>
+    #    > replicas - The number of replicas for Namespaced Prometheus instances.
+    #    > Use 2 or 3 for High Availability.
+    #    > This value should be less than or equal to the number
+    #    > of Availability Zones of the cluster.
+    #    > accepted_values:
+    #    > - 1
+    #    > - 2
+    #    > - 3
+    # replicas: 1
+    #    > retention - Retention period for all Namespaced Prometheus instances.
+    #    > If you increase retention, please adjust storage size as well, otherwise
+    #    > Prometheus will start removing old storage blocks to avoid running out of disk space.
+    #    > regex: ^[1-9][0-9]{0,3}(d|w)$
+    # retention: 6w
+    vault:
+      storage:
+        #    > size - Persistent storage size allocated for Prometheus Vault, in Gi.
+        #    > regex: ^[1-9][0-9]{0,3}Gi$
+        # size: 45Gi
+  node_exporter:
+    #    > memory_limit - The memory request of the node exporter. Must either be between 30M and 999M, 30Mi and 999Mi, 1G and 9G or 1Gi and 9Gi. Must be expressd in M, Mi, G or Gi.
+    #    > regex: ^((?:[3-9][0-9]M[i]?)|(?:[1-9][0-9][0-9]M[i]?)|(?:[1-9]G[i]?))$
+    # memory_limit: 256Mi
+    #    > memory_request - The memory request of the node exporter. Must either be between 30M and 999M, 30Mi and 999Mi, 1G and 9G or 1Gi and 9Gi. Must be expressd in M, Mi, G or Gi.
+    #    > regex: ^((?:[3-9][0-9]M[i]?)|(?:[1-9][0-9][0-9]M[i]?)|(?:[1-9]G[i]?))$
+    # memory_request: 32Mi
+  prometheus:
+    #    > storageclass - The Kubernetes StorageClass to be used by Prometheus volumes.
+    #    > regex: ^[0-9a-z]+[-0-9a-z]*[0-9a-z]+$
+    # storageclass: prometheus
+ops:
+  #    > bank_name - Name of the bank, as displayed in the operations dashboard
+  bank_name: banklitex
+  #    > currency_display - Determines if the code and/or currency symbol should be displayed for monetary values in the Operations Dashboard, i.e. code: 1,234,567.00 GBP, symbol: £1,234,567.00, code_and_symbol: GBP £1,234,567.00
+  #    > accepted_values:
+  #    > - code
+  #    > - symbol
+  #    > - code_and_symbol
+  # currency_display: code
+  db:
+    #    > admin_user - Admin user for the ops database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the ops database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Ops DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"ops_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: ops_migrator
+    #    > name - Name of the ops database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: ops
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the operations dashboard database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"ops\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: ops
+  #    > default_locale - This locale will be used for formatting values in the Operations Dashboard, including currencies, dates and times.
+  #    > It is used as fallback if no locale can be detected from the user's browser or if ops.use_browser_locale is set to false.
+  #    > As with ops.supported_locales, the locale format should conform to an ISO 639-1 language code.
+  #    > This locale must also be added to ops.supported_locales.
+  # default_locale: en-GB
+  #    > default_page_title - Default title for pages in the operations dashboard
+  default_page_title: banklitex
+  #    > display_timezone - Formats the display dates in the Operations Dashboard to the specified timezone.
+  #    > This value must be an IANA Timezone Database Name e.g. Asia/Singapore. The default value is UTC.
+  #    > For a list of Timezone Database Names see: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+  # display_timezone: UTC
+  pluggable_components:
+    #    > payments_hub - Payment hub pluggable component
+    #    > accepted_values:
+    #    > - true
+    #    > - false
+    # payments_hub: false
+    #    > product_hub - Product hub pluggable component
+    #    > accepted_values:
+    #    > - true
+    #    > - false
+    # product_hub: false
+    #    > xpl - Experience layer pluggable component
+    #    > accepted_values:
+    #    > - true
+    #    > - false
+    # xpl: false
+  #    > supported_locales - Defines the list of locales that the user can select to translate content within Operations Dashboard.
+  #    > Only the values defined in ops.supported_locales.example.value can be used
+  #    > As with ops.default_locale, the locale format should conform to an ISO 639-1 language code.
+  #    > accepted_type: array
+  # supported_locales:
+  # - en-GB
+  #    > use_browser_locale - Determines whether to take the user's browser locale into consideration when formatting values (including currencies, dates and times) in the Operations Dashboard.
+  #    > If set to false, the value of ops.default_locale will be used.
+  #    > accepted_values:
+  #    > - true
+  #    > - false
+  # use_browser_locale: true
+  website:
+    #    > endpoint - The endpoint used for ingress to the operations dashboard website. This must be a subdomain of
+    #    > common.services.domain. Cookies can only be set on the domain a request is made from. This
+    #    > implies that all SAML protected websites must be part of the same domain.
+    #    > (https://tools.ietf.org/html/rfc6265#section-4.1.2.3)
+    endpoint: ops.tm.blx-demo.com
+payment_hub_api:
+  #    > default_permissions_policy - The default OPA policy used when authorising requests made to the Payment Hub API.
+  # default_permissions_policy: |-
+  #   package payment_hub_api_permissions
+  #   default allow = false
+  #   allow {
+  #     input.valid_scopes[_] == input.jwt_claims.scp[_]
+  #   }
+  #   allow {
+  #     input.valid_scopes[_] == split(input.jwt_claims.scope, " ")[_]
+  #   }
+payments_hub:
+  #    > endpoint - The endpoint used for ingress to the payment hub.
+  endpoint: payments-hub-api.insert.client.endpoint.here
+  #    > exception_handling_cases_json - An optional json object defining the exception handling behaviour; Change to {} for no
+  #    > exception handling.
+  exception_handling_cases_json: |
+    {
+      "INBOUND_AUTH_REJECTIONS": {
+        "RESTRICTION_REQUIRES_REVIEW": {
+          "REDIRECT_FUNDS": true
+        }
+      }
+    }
+  #    > fps_internal_account - The internal account for FPS.
+  #    > regex: ^[a-z0-9A-Z\_\-]{0,36}$
+  fps_internal_account: FPS_CREDIT_TRANSFER
+  #    > fps_txnref_prefix - A prefix that is used during the generation of a scheme_transaction_id (for FPS payments).
+  fps_txnref_prefix: TMFPS
+  #    > gcp_bucket - An optional GCP bucket name that is used by the Vocalink service to store and retrieve
+  #    > payment scheme data. Only applicable if the Payments Hub is deployed.
+  # gcp_bucket: ""
+  #    > local_bics - A comma separated list of SWIFT BICs that are considered to be local to the Vault instance. This must be set to enable IBAN
+  #    > creation in the Payments Hub.
+  # local_bics: ""
+  #    > local_sort_codes - A comma separated list of sort codes that are considered to be local to the Vault instance. The Payments Hub uses
+  #    > these to:
+  #    > - Determine if payments should be routed as OnUs payments (rather than going out to a scheme).
+  #    > - As a validation check during GBDSC account number generation. It is not possible to generate an account number
+  #    >   for a sort code that is not listed here.
+  local_sort_codes: 999999,999998
+  #    > redirection_account - The account to which funds to be redirected in exception handling cases. Applies to FPS payments only.
+  #    > As of Vault version 5.0 this must be an Account rather than an InternalAccount.
+  #    > regex: ^[a-z0-9A-Z\_\-]{0,36}$
+  redirection_account: FPS_CREDIT_TRANSFER_REDIRECTION
+  #    > unapplied_funds_account - The id of the account to which funds are redirected in the case where pre-cleared funds cannot be applied
+  #    > to a customer's account (for example, in the FPS execution plan "FPS_CLEARED"). Applies to FPS payments only.
+  #    > As of Vault version 5.0 this must be an Account rather than an InternalAccount.
+  #    > regex: ^[a-z0-9A-Z\_\-]{0,36}$
+  # unapplied_funds_account: "33"
+  #    > use_payment_action_execution_plans - Switches payment processing from target status execution plans to payment action execution plans.
+  #    > accepted_values:
+  #    > - true
+  #    > - false
+  # use_payment_action_execution_plans: false
+policy:
+  #    > cacheRenewalInterval - Policy engine cache renewal interval (duration). Accepts any valid time.ParseDuration format.
+  # cacheRenewalInterval: 10s
+postings:
+  api:
+    enriched:
+      calendar:
+        #    > id - The ID of the calendar to enrich committed posting instruction batches with calendar period information
+        #    > regex: ^([_0-9A-Za-z-]+)?$
+        # id: ""
+        #    > offset - The offset duration the referenced calendar is from UTC. Used for generating the localised fields. Specified as
+        #    > positive or negative hours and minutes
+        #    > regex: ^([-+]?([0-9]{1,2}h)?([0-9]{1,2}m)?)?$
+        # offset: ""
+    #    > format - The format of public topic messages consumed or produced by the Streaming API
+    #    > accepted_values:
+    #    > - json
+    #    > - proto
+    format: proto
+  db:
+    #    > admin_user - Root user for the postings database (used for schema initialisation)
+    #    > Warning: For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for postings.
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the postings database
+    #    > Warning: This section should ONLY be populated if using a separate physical db for postings. The DB host should be different to all the other *.db.host sections of this file. For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for postings.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Postings DB migrator user used for running db migrations
+    #    > Warning: For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for postings.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"vault_postings_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: <<¬¬ .Values.vault.db.migrator_user ¬¬>>
+    #    > name - Name of the Postings database
+    #    > Warning: For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for postings.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: <<¬¬ .Values.vault.db.name | quote ¬¬>>
+    #    > port - Database port to connect to.
+    #    > Warning: For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for postings.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the postings database
+    #    > Warning: This section should ONLY be populated if using a separate physical db for balances. The DB host should be different to all the other *.db.host sections of this file. For Vault versions instances created <2.6 the value must be matching the values of vault db. This can be achieved by not specifying the value to fall back on the default. For new instances created >=2.6 the value can be different if using a separate physical db for postings.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"vault_postings\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: <<¬¬ .Values.vault.db.user ¬¬>>
+saml_idp:
+  #    > certificate - The SAML x509 certificate used by Vault to verify requests, provided by the IDP at setup.
+  #    > Public key in a single line string. The following characters are valid for the body
+  #    > of the certificate: a-z A-Z 0-9 / + =
+  #    > regex: ^-{5}BEGIN CERTIFICATE-{5}[a-z0-9A-Z\/+]+={0,2}-{5}END CERTIFICATE-{5}$
+  certificate: '-----BEGIN CERTIFICATE-----MIIC8DCCAdigAwIBAgIQGVok3j7h9IFHhpkkq+KR5zANBgkqhkiG9w0BAQsFADA0MTIwMAYDVQQDEylNaWNyb3NvZnQgQXp1cmUgRmVkZXJhdGVkIFNTTyBDZXJ0aWZpY2F0ZTAeFw0yMzExMDYxNDM4MTNaFw0yNjExMDYxNDM4MTNaMDQxMjAwBgNVBAMTKU1pY3Jvc29mdCBBenVyZSBGZWRlcmF0ZWQgU1NPIENlcnRpZmljYXRlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAww/4UiXV9DxUusxRDGUs8DVLp0DcQRHhszIfiavanhUXYf6GO17WENMMINd1mvYx8yZreaO2eeKtFXtiv2FfbdhuR76KUaeed6XkhZERJyTF/665S811BQqR1tbZEM/H/TVo/9WwGO0T9MPpe39jWGqNJXzA8eBU2xwohHVXXuWzod20UsbaecDOlKDJhP6APGVFZBfrVSfzvqbaXFNmC8vFw5eUURUimHajxNmqL5TsIUP1hcRmMfwVJfeGD1pGKyKPNKuoHqc+wrHyMr9V1fo+4RZ130lrWTiMhzsmZGmnKk7i11Xkn1ewdxSKdsAvrfV5Pe0LEzfjMYfSO8JOwQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQBqeHv1iLfIfUVoqZLfKjJ7Z7zoYawKnISK7G7MW8RBVEJ0KbKQj92sjW2LrNV+apBsAMFAxeJPWzPZYy9X4gAIQc/+pLnkr1C7pUh/EfePQMR1FekVAd6dQtunyTLSjKrFhtVXLq0/H+QJH2SwDWZwBgxLla31WPAp0PCXfQjSbxi0oFEy+Wb7G/mYdeZHs3ZqK/bj/OknyK4tq/FKdho4hYN8IknsRZDZb8vBUyJw6blbYeyeiVuLPhPwrMZRDIpt3i9ssTr3NNzrBTI4O5U0zqkJeqeUN/ad5PDyix1Yb7CbZ7fqK7+cP8nDy3yG8FXw76WaTsSddmTZqVqHTABU-----END CERTIFICATE-----'
+  #    > email_attribute - The key of the email SAML attribute sent by the IDP, as configured there
+  email_attribute: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
+  #    > endpoint - The endpoint of the dummy SAML IDP, if used (ie, when saml_idp_pkg is deployed)
+  #    > This is not required if you are not using it.
+  endpoint: 'saml-dev.tm.blx-demo.com'
+  #    > entity_id - The SAML Entity ID given by the IDP at setup
+  entity_id: 'https://sts.windows.net/55a2bc67-aec1-4ad2-9a9c-5b2457b91dcd/'
+  #    > name_attribute - The key of the name SAML attribute sent by the IDP, as configured there
+  name_attribute: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
+  #    > roles_attribute - The key of the roles SAML attribute sent by the IDP, as configured there
+  #    > A user can have multiple roles
+  roles_attribute: 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+  #    > slo_url - The SAML logout URL for the given IDP, usually not provided at setup but easy to find
+  slo_url: 'https://login.microsoftonline.com/55a2bc67-aec1-4ad2-9a9c-5b2457b91dcd/saml2'
+  #    > sso_url - The SAML Single Sign On (SSO) URL given by the IDP at setup, to which Vault will redirect
+  sso_url: 'https://login.microsoftonline.com/55a2bc67-aec1-4ad2-9a9c-5b2457b91dcd/saml2'
+saml_sp:
+  #    > authn_requests_signed - Indicates whether the SAML Service Provider will sign `<samlp:AuthnRequest>` with its private
+  #    > key.
+  #    > accepted_type: bool
+  authn_requests_signed: false
+  #    > fail_on_authn_context_mismatch - Indicates that the SAML Service Provider will only accept an authn context if it corresponds to
+  #    > the requested authn context.
+  #    > accepted_type: bool
+  fail_on_authn_context_mismatch: true
+  #    > name_id_encrypted - Specifies whether the NameID contained with `<samlp:logoutRequest>` messages sent by the SAML
+  #    > Service Provider will be encrypted using the Identity Provider's certificate.
+  #    > accepted_type: bool
+  name_id_encrypted: false
+  #    > requested_authn_context - Specifies whether the SAML Service Provider will request that the auth context be sent in the
+  #    > authn request.
+  #    > accepted_type: bool
+  requested_authn_context: true
+  #    > sign_metadata - Indicates whether the SAML Service Provider will sign its metadata using its private key.
+  #    > accepted_type: bool
+  sign_metadata: false
+  #    > signature_algorithm - Specifies the one-way hashing algorithm used to generate a digest to be signed by the SAML
+  #    > Service Provider. This digest is used in the process of generating a signed logout request.
+  #    > accepted_values:
+  #    > - http://www.w3.org/2001/04/xmldsig-more#rsa-sha256
+  #    > - http://www.w3.org/2001/04/xmldsig-more#rsa-sha384
+  #    > - http://www.w3.org/2001/04/xmldsig-more#rsa-sha512
+  signature_algorithm: http://www.w3.org/2001/04/xmldsig-more#rsa-sha256
+  #    > sls_req_signed - Determines whether the SAML Service Provider will sign SAML logout requests using its private
+  #    > key.
+  #    > accepted_type: bool
+  # sls_req_signed: false
+  #    > sls_resp_signed - Determines whether the SAML Service Provider will sign `<samlp:logoutResponse>` messages with
+  #    > its private key.
+  #    > accepted_type: bool
+  # sls_resp_signed: false
+  #    > strict - Setting the SAML Service Provider to strict enables greater protection by performing additional
+  #    > checks on the response from the SAML Identity Provider. Enabling this setting is strongly
+  #    > recommended on all production environments.
+  #    > accepted_type: bool
+  # strict: false
+  #    > want_assertions_encrypted - Determines whether the SAML Service Provider will require assertions sent by the SAML Identity
+  #    > Provider to be encrypted with the Service Provider's certificate.
+  #    > accepted_type: bool
+  # want_assertions_encrypted: false
+  #    > want_assertions_signed - Determines whether the SAML Service Provider will require assertions sent by the SAML Identity
+  #    > Provider to be signed with the Identity Provider's private key.
+  #    > accepted_type: bool
+  # want_assertions_signed: false
+  #    > want_attribute_statement - Specifies that the SAML Service Provider expects and requires an attribute statement on the
+  #    > `<samlp:Response>` message.
+  #    > accepted_type: bool
+  # want_attribute_statement: false
+  #    > want_messages_signed - Indicates that the SAML Service Provider expects `<samlp:Response>`, `<samlp:LogoutRequest>` and
+  #    > `<samlp:LogoutResponse>` messages to be signed by the Identity Provider with its private key.
+  #    > accepted_type: bool
+  # want_messages_signed: false
+  #    > want_name_id_encrypted - Indicates that the SAML Service Provider expects the NameID sent by the Identity Provider to be
+  #    > encrypted with the Service Provider's certificate.
+  #    > accepted_type: bool
+  # want_name_id_encrypted: false
+  #    > want_name_id - Specifies that the SAML Service Provider requires a `NameID` element on the `<samlp:Response>`
+  #    > message.
+  #    > accepted_type: bool
+  # want_name_id: false
+schedule_manager:
+  db:
+    #    > admin_user - Admin user for the schedule manager database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the schedule manager database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - schedule-manager DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"schedule-manager_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: schedule_manager_migrator
+    #    > name - Name of the schedule manager database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: schedule_manager
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the schedule manager database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"calendar\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: schedule_manager
+scheduler:
+  db:
+    #    > admin_user - Admin user for the scheduler database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the scheduler database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Scheduler DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"scheduler_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: scheduler_migrator
+    #    > name - Name of the scheduler database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: scheduler
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the scheduler database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"scheduler\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: scheduler
+  #    > max_tps - Setting this value to any value other than 0 will limit the of the job polling rate of the job poller to whatever
+  #    > the value is set to. This can be used to rate limit any downstream service of the job poller such as end of day.
+  # max_tps: "0"
+  #    > update_inverval_secs - Setting this value will change the minimum update cycle for scheduled jobs to be published.
+  #    > This duration affects the minimum execution duration between jobs for a given Schedule or Schedule Group.
+  #    > Decreasing this value below the default may cause additional load and contention on the Scheduler Database.
+  #    > Minimum: 1 second ("1").
+  # update_inverval_secs: "20"
+#    > secrets_management - Configuration blocks for secret management.
+#    > Must be one of hashicorp_vault or aws_secrets_manager configuration block.
+#    > NOTE: One of the following sections needs to be present in the file, for example hashicorp_vault OR aws_secrets_manager depending on the secrets store in use
+#    > 
+#    > #  HashiCorp Vault
+#    > 
+#    > address - The Hashicorp Vault endpoint
+#    > 
+#    > secret_prefix - Path that all secrets for this Vault instance are prefixed with.
+#    > 
+#    > auth_k8s_backend - Optional field specifying where the Kubernetes auth backend for the corresponding Kubernetes cluster is mounted in HashiCorp Vault. Defaults to "kubernetes"
+#    > 
+#    > ca_pem - Optional field containing the HashiCorp Vault CA certificate chain as a string. If this field is set, it is used for TLS verification of the HashiCorp Vault server.
+#    > This is useful when the HashiCorp Vault instance is set up with a self-signed certificate.
+#    > 
+#    > db.ca - Optional field describing the location of the Certificate Authority to use for signing database certificates
+#    > accepted_values:
+#    > - hault-kv
+#    > - hault-pki
+#    > 
+#    > db.pki_mount_point - Optional field specifying the mount point to use for the HashiCorp Vault PKI engine for database certificates.
+#    > Defaults to “pki”. Only applies when secrets_management.hashicorp_vault.db.ca: “hault-pki”.
+#    > regex: ^[^\/].*[^\/]$
+#    > 
+#    > kafka.ca - Optional field describing the location of the Certificate Authority to use for signing kafka certificates
+#    > accepted_values:
+#    >  - hault-kv
+#    >  - hault-pki
+#    > 
+#    > kafka.pki_mount_point - Optional field specifying the mount point to use for the HashiCorp Vault PKI engine for kafka certificate.
+#    > Defaults to “pki”. Only applies when secrets_management.hashicorp_vault.kafka.ca: “hault-pki”.
+#    > regex: ^[^\/].*[^\/]$
+#    > 
+#    > namespace - Optional field specifying the HashiCorp Vault namespace, this is an Enterprise feature, should not be set for OSS Vault
+#    > 
+#    > secret_mount_point - Optional field for path where the KV backend for secrets is mounted. Defaults to "secret"
+#    > regex: ^[^\/].*[^\/]$
+#    > 
+#    > secret_version - Optional field for version of the KV backend used for secrets. Defaults to "1"
+#    > accepted_values:
+#    > - "1"
+#    > - "2"
+#    > 
+#    > vault_installer_hault_role - Optional field for the name of a HashiCorp Vault role bound to the service account used by the Vault installer ops pod.
+#    > The Vault installer can be used to automatically manage secrets and policies within HashiCorp Vault. To allow this, the policy supplied with the release artifacts should be granted to the role specified.
+#    > This will grant the permissions required by the role used by the installer to manage secrets and policies. Defaults to "vault-installer"
+#    > 
+#    > #  Example:
+#    > 
+#    > secrets_management:
+#    >   hashicorp_vault:
+#    >     address: https://vault.dev.your.bank.com
+#    >     auth_k8s_backend: kubernetes
+#    >     db:
+#    >       ca: hault-kv
+#    >     kafka:
+#    >       ca: hault-kv
+#    >     secret_mount_point: secret
+#    >     secret_prefix: dev
+#    >     secret_version: "1"
+#    >     vault_installer_hault_role: vault-installer
+#    > 
+#    > # AWS Secrets Manager
+#    > 
+#    > csp_account_id - AWS Account ID. Required for creating IAM roles and policies, as well as annotating Kubernetes ServiceAccounts.
+#    > 
+#    > oidc_provider - OIDC Provider for the EKS Cluster. Required for creating Trust Relationship policies.
+#    > 
+#    > region - Region containing the AWS Secrets Manager instance.
+#    > 
+#    > secret_prefix - Path that all secrets for this Vault instance are prefixed with in AWS Secrets Manager.
+#    > 
+#    > role_permissions_boundary - Optional field giving the policy ARN of the permissions boundary to be used when the Vault Installer creates Vault
+#    >   Application IAM roles. This policy must exist before installation.
+#    >   If the Vault Installer IAM role has a Permissions Boundary and it limits the Installer
+#    >   to only creating roles that have a Permissions Boundary, this must match that string.
+#    > 
+#    > tm_iam_prefix - Optional field Prefix for all IAM roles and policies that Vault requires to access AWS SecretsManager.
+#    > 
+#    > # Example:
+#    > 
+#    > secrets_managment:
+#    >   aws_secrets_manager:
+#    >     csp_account_id: 123456789
+#    >     oidc_provider: https://oidc.eks.eu-west-2.amazonaws.com/id/1111111
+#    >     region: eu-west-2
+#    >     role_permissions_boundary: arn:aws:iam::1234567689:policy/vault-role-permissions-boundary
+#    >     secret_prefix: dev
+#    >     tm_iam_prefix: tm-prefix/vault-account
+#    > 
+secrets_management:
+  aws_secrets_manager:
+    csp_account_id: "304319179974"
+    oidc_provider: oidc.eks.eu-central-1.amazonaws.com/id/EB51F90D1F7F7E12661EF10882906BA5
+    region: eu-central-1
+    role_permissions_boundary: arn:aws:iam::304319179974:policy/vault_permissions_boundary_policy
+    secret_prefix: tm-vault
+    tm_iam_prefix: tm-prefix/sandbox-tm
+
+# secrets_management:
+#   hashicorp_vault:
+#     address: https://vault.dev.your.bank.com
+#     secret_prefix: dev
+switchboard:
+  db:
+    #    > admin_user - Admin user for the switchboard database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the switchboard database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - Switchboard DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"switchboard_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: switchboard_migrator
+    #    > name - Name of the switchboard database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: switchboard
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the switchboard database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"switchboard\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: switchboard
+tracing:
+  exporter:
+    #    > jaeger-endpoint - The endpoint for exporters to send traces via Jaeger protobuf protocol to.
+    # jaeger-endpoint: ""
+  sampler:
+    #    > arg - Sampler strategy dependent argument. For parentbased_traceidratio, the argument is the sample rate, which should be in the [0..1] range.
+    #    > https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/sdk-environment-variables.md#general-sdk-configuration
+    # arg: "0"
+    #    > type - OpenTelemetry sampler based on https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/sdk.md#built-in-samplers
+    #    > accepted_values:
+    #    > - always_off
+    #    > - parentbased_traceidratio
+    # type: parentbased_traceidratio
+vault:
+  db:
+    #    > admin_user - Admin user for the vault database (used for schema initialisation). Defaults to the deprecated
+    #    > value 'vault.db.root_user', or "postgres" if 'vault.db.root_user' is not specified.
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬default "postgres" .Values.vault.db.root_user¬¬>>
+    #    > host - Hostname for the vault database
+    host: tm-aurora-cluster-db.cluster-cmftmunipowd.eu-central-1.rds.amazonaws.com
+    #    > migrator_user - Vault DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: vault_migrator
+    #    > name - Name of the vault database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: vault
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: "5432"
+    #    > replication_slot - Name of the replication slot used in prior releases for streaming to vault services.  Required
+    #    > for deletion of the current slot.
+    #    > Must conform with the regex "^[a-z_][a-z0-9_]{0-59}+$". Usage of lower case alphabets,
+    #    > integers and underscores are valid.
+    #    > regex: ^[a-z_][a-z0-9\_]{0,59}$
+    replication_slot: vault_replication
+    #    > replication_user - User used in prior releases for streaming replication from this database to vault services.
+    #    > Required for deletion of the user.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    replication_user: vault
+    #    > user - Username for the vault database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"vault_core\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: vault
+vault_jobs:
+  db:
+    #    > admin_user - Admin user for the vault jobs database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the vault jobs database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - vault-jobs DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"vault_jobs_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: vault_jobs_migrator
+    #    > name - Name of the vault jobs database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: vault_jobs
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the vault jobs database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"vault_jobs\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: vault_jobs
+warm_storage:
+  db:
+    #    > admin_user - Admin user for the warm storage database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the warm storage database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - warm-storage DB migrator user used for running db migrations
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"warm_storage_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: warm_storage_migrator
+    #    > name - Name of the warm storage database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: warm_storage
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the warm storage database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"warm_storage\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: warm_storage
+webhook_operator:
+  #    > namespace - The namespace to deploy the webhook operator to
+  # namespace: webhook-operator
+workflow_engine:
+  #    > legacy_schema_versions_enabled - Option to enable support for legacy schemas (below 3.0.0) in workflows engine.
+  #    > Starlark-based and Python-based Workflow transforms are supported, and this optional configuration
+  #    > setting disables legacy Workflows schema (i.e. all Workflow schema versions prior to 3.0).
+  #    > There is an identical value for `workflow_simulator`.
+  #    > This configuration option is temporary and will be removed in Vault 4.0, which will only support Starlark-based
+  #    > transformations.
+  #    > Starlark-based Workflows offer enhanced security posture due to their more restricted runtime and sandbox support.
+  #    > WARNING: When `legacy_schema_versions_enabled` is set to `false`, any Workflows based on schema versions prior to
+  #    > 3.0 will no longer function.
+  #    > The default is `true`, which supports both legacy (Python-based) and current (Starlark-based) Workflow transforms.
+  #    > accepted_values:
+  #    > - "false"
+  #    > - "true"
+  # legacy_schema_versions_enabled: "true"
+workflow_simulator:
+  #    > endpoint - The endpoint used for ingress to the workflow simulator
+  endpoint: workflow-simulator.tm.blx-demo.com
+  #    > legacy_schema_versions_enabled - Option to enable support for legacy schemas (below 3.0.0) in workflows simulator.  Starlark-based and Python-based Workflow transforms are supported, and this optional configuration setting disables legacy Workflows schema (i.e. all Workflow schema versions prior to 3.0).  There is an identical value for `workflow_engine`.  This configuration option is temporary and will be removed in Vault 4.0, which will only support Starlark-based transformations. Starlark-based Workflows offer enhanced security posture due to their more restricted runtime and sandbox support.
+  #    > WARNING: When `legacy_schema_versions_enabled` is set to `false`, any Workflows based on schema versions prior to 3.0 will no longer function. The default is `true`, which supports both legacy (Python-based) and current (Starlark-based) Workflow transforms.
+  #    > accepted_values:
+  #    > - "false"
+  #    > - "true"
+  # legacy_schema_versions_enabled: "true"
+workflow_transform_executor:
+  #    > step_limit - The upper bound of execution steps each Starlark execution thread can make in the Transform executor.
+  #    > Any Starlark transform that exceeds this step limit will result in the transform executor returning an error.
+  #    > regex: ^\d{3,5}$
+  # step_limit: "1000"
+workflows_api:
+  #    > endpoint - The endpoint used for ingress to the switchboard API
+  endpoint: workflows-api.tm.blx-demo.com
+workflows_callback_router:
+  #    > streaming_api_consumer_config - Lists of public topics consumed by the callback router
+  streaming_api_consumer_config: |
+    # Public topics to be consumed by the callback router for auto trigger conditions.
+    # See {documentation-url}/reference/workflows-tickets/workflow-actions/callback-action/#streaming_autotrigger
+    ASYNC_CALLBACK_TOPICS: []
+
+    # Public topics to be consumed by the callback router for auto instantiation conditions.
+    # See {documentation-url}/reference/workflows-tickets/workflow-auto-instantiations/#auto-instantiations-overview
+    AUTO_INSTANTIATION_TOPICS: []
+xpl:
+  db:
+    #    > admin_user - Admin user for the xpl database (used for schema initialisation)
+    #    > regex: ^[a-zA-Z][a-z0-9A-Z\_]{0,15}$
+    # admin_user: <<¬¬ .Values.vault.db.admin_user ¬¬>>
+    #    > host - Hostname for the xpl database.
+    # host: <<¬¬ .Values.vault.db.host ¬¬>>
+    #    > migrator_user - XPL DB migrator user used for running DB migrations.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"xpl_migrator\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # migrator_user: xpl_migrator
+    #    > name - Name of the xpl database.
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # name: xpl
+    #    > port - Database port to connect to.
+    #    > regex: ^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+    # port: <<¬¬ .Values.vault.db.port | quote ¬¬>>
+    #    > user - Username to access the experience layer database
+    #    > Note: Hyphen characters as part of this value are supported, but recommended to be avoided.
+    #    > If you are using client certificates, set this value to be equal to the common name of the
+    #    > \"xpl\" principal, which can be found in the release.json file.
+    #    > regex: ^[a-zA-Z\_][a-z0-9A-Z\_-]{0,59}$
+    # user: xpl
+  #    > endpoint - The endpoint used for ingress to the XPL API
+  endpoint: xpl.tm.blx-demo.com

@@ -1,0 +1,141 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-west-2:051939627954:certificate/e42f849d-3077-4820-b964-e601fcce30db
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz/ready
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/security-groups: sg-0c1c18843f8ff8d6e
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-FS-1-2-Res-2019-08
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/subnets: subnet-0af6e483ef6aa6060, subnet-067d94d12da487d3c, subnet-00842b40ed4d77aaa
+    alb.ingress.kubernetes.io/success-codes: 200-404
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/wafv2-acl-arn: arn:aws:wafv2:eu-west-2:051939627954:regional/webacl/sandbox-tm-vault-core/11a99138-b129-42df-8cc9-e95c32e41dc4
+    kubernetes.io/ingress.class: alb
+  name: tm-ingress-internet
+  namespace: istio-system
+spec:
+  rules:
+  - host: ops.tmuk.gft-aws.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 15021
+        path: /healthz/ready
+        pathType: Prefix  
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 443
+        path: /
+        pathType: Prefix
+  - host: documentation.tmuk.gft-aws.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 15021
+        path: /healthz/ready
+        pathType: Prefix  
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 443
+        path: /
+        pathType: Prefix
+  - host: saml-dev.tmuk.gft-aws.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 15021
+        path: /healthz/ready
+        pathType: Prefix  
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 443
+        path: /
+        pathType: Prefix
+  - host: core-api.tmuk.gft-aws.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 15021
+        path: /healthz/ready
+        pathType: Prefix  
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 443
+        path: /
+        pathType: Prefix
+  - host: workflows-api.tmuk.gft-aws.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port:
+              number: 15021
+        path: /healthz/ready
+        pathType: Prefix
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port:
+              number: 443
+        path: /
+        pathType: Prefix
+  - host: access-control-api.tmuk.gft-aws.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 15021
+        path: /healthz/ready
+        pathType: Prefix  
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 443
+        path: /
+        pathType: Prefix
+  - host: data-loader-api.tmuk.gft-aws.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 15021
+        path: /healthz/ready
+        pathType: Prefix  
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 443
+        path: /
+        pathType: Prefix

@@ -1,0 +1,99 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: ops
+  namespace: istio-system
+spec:
+  hosts:
+    - "ops.tmuk.gft-aws.com"
+  gateways:
+    - tm-vault-gateway
+  http:
+    - route:
+        - destination:
+            host: vault-admin-website.tm-vault.svc.cluster.local
+            port:
+              number: 6008
+      match:
+        - uri:
+            prefix: /
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: documentation
+  namespace: istio-system
+spec:
+  hosts:
+    - "documentation.tmuk.gft-aws.com"
+  gateways:
+    - tm-vault-gateway
+  http:
+    - route:
+        - destination:
+            host: documentation.tm-vault.svc.cluster.local
+            port:
+              number: 80
+      match:
+        - uri:
+            prefix: /    
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: saml-dev
+  namespace: istio-system
+spec:
+  hosts:
+    - "saml-dev.tmuk.gft-aws.com"
+  gateways:
+    - tm-vault-gateway
+  http:
+    - route:
+        - destination:
+            host: saml-idp.tm-vault.svc.cluster.local
+            port:
+              number: 8000
+      match:
+        - uri:
+            prefix: /
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: core-api
+  namespace: istio-system
+spec:
+  hosts:
+    - "core-api.tmuk.gft-aws.com"
+  gateways:
+    - tm-vault-gateway
+  http:
+    - route:
+        - destination:
+            host: core-api-gateway.tm-vault.svc.cluster.local
+            port:
+              number: 8080
+      match:
+        - uri:
+            prefix: /
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: data-loader-api
+  namespace: istio-system
+spec:
+  hosts:
+    - "core-api.tmuk.gft-aws.com"
+  gateways:
+    - tm-vault-gateway
+  http:
+    - route:
+        - destination:
+            host: data-loader-api-gateway.tm-vault.svc.cluster.local
+            port:
+              number: 8084
+      match:
+        - uri:
+            prefix: /

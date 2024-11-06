@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+    finally:
+      - echo Exit the install phase...
+  pre_build:
+    commands:
+      - |
+        if [[ $(aws s3api head-object --bucket $(echo $S3_ARTIFACTS | cut -d/ -f3) --key sync-error.log --query 'ContentLength') -eq 0 ]]; then
+          echo "Success: sync-error.log is empty"
+        else
+          echo "Error: sync-error.log is not empty, please check the error report"
+          exit 1
+        fi
+  build:
+    commands:
+      - echo "Build succeeded"

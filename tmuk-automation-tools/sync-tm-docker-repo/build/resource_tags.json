@@ -1,0 +1,8 @@
+[
+    {"Key": "blx:tag-version", "Value": "1"},
+    {"Key": "blx:staff", "Value": "gft-it"},
+    {"Key": "blx:owner", "Value": "gft-it"},
+    {"Key": "blx:environment", "Value": "shared-service"},
+    {"Key": "blx:data-classification", "Value": "internal" },
+    {"Key": "blx:cost-center", "Value": "gft-it"}
+]

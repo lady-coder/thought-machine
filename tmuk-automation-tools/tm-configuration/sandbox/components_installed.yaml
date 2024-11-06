@@ -1,0 +1,130 @@
+webhook-operator:
+  defaultNamespace: webhook-operator
+  description: |
+    An operator that manages the creation and deletion of Mutating and Validating Webhook Configurations.
+    It also handles certificate rotations required for secure communication between kubernetes control plane and backend webhook services.
+    This should always be installed prior to any Vault installation,
+    as it manages critical webhook configurations required to mutate Kubernetes resources for Vault installation.
+  singleton: true
+istio:
+  defaultNamespace: tm-system
+  description: |
+    A service mesh that can be deployed to Kubernetes. When operating distributed systems such as Vault,
+    this provides management of the communication between the various services, offering features such as traffic management,
+    improved reliability and performance, policy enforcement and telemetry.
+    This on-cluster version of Istio is provided for ease of use. Using your own Istio setup is also supported. Vault Core requires Istio to run.
+  singleton: true
+observability:
+  defaultNamespace: tm-monitoring
+  description: |
+    The Observability Stack is required alongside Vault. The Observability Stack can be used to view and observe the status of Vault
+    using metrics, dashboards and alerts.
+  singleton: true
+# kafka:
+#   defaultNamespace: tm-vault
+#   description: |
+#     Used for streaming data. This on-cluster version of Kafka for ease of use, but Thought Machine does not
+#     provide production support for it and therefore it is not appropriate for production. Thought Machine highly recommends
+#     using alternative Kafka clusters, either managed or self-hosted. This component is intended for development purposes only.
+#     It requires a multi-AZ (Availability Zone) cluster. Upgrading this component from an older version could require manual intervention
+#     to ensure that resources are spread evenly across all AZs.
+kafka-init:
+  defaultNamespace: tm-vault
+  description: |
+    Component to configure Kafka ACLs for Vault services. It is optional if Kafka permissions are being managed separately.
+    If using this, make sure to install the kafka-cleanup component after installing vault.
+vault-core:
+  defaultNamespace: tm-vault
+  description: |
+    This component deploys the main packages required to run Vault Core, Thought Machine's core banking product.
+  replaces: vault
+# payments-hub:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys the packages to enable the Vault Payments Hub, including the FPS and OnUs payment schemes.
+#     The Payments Hub is a UK-specific optional component.
+#   replaces: vault
+# payments-hub-bacs:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys the additional packages to enable Vault Payments Hub BACS payment scheme.
+#     The Payments Hub is a UK-specific optional component.
+#   replaces: vault
+# payments-hub-bottomline:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys the additional packages to enable Vault Payments Hub Bottomline payment gateway connectivity.
+#     The Payments Hub is a UK-specific optional component.
+#   replaces: vault
+# payments-hub-form3:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys the additional packages to enable Vault Payments Hub Form3 payment gateway connectivity.
+#     The Payments Hub is a UK-specific optional component.
+#   replaces: vault
+# xpl:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys the required packages to enable the Vault Experience Layer (XPL).
+#     The XPL is an optional component that adds limited support for customer-facing resources to Vault.
+#     New clients should contact Thought Machine before using the XPL.
+#   replaces: vault
+# xpl-payments-hub:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys the required packages to enable the Vault Payments Hub Experience Layer (XPL) Connector.
+#     New clients should contact Thought Machine before using this component.
+#   replaces: vault
+migration:
+  defaultNamespace: tm-vault
+  description: |
+    This component deploys the services needed for migrations. This includes the data loader and the Posting API deployments
+    of Vault that allow the migration of historical postings. It is advised that this package is undeployed after the financial
+    migration is complete.
+  replaces: vault
+migration-xpl:
+  defaultNamespace: tm-vault
+  description: |
+    For clients using the Experience Layer (XPL) this component will create transaction resources for certain postings
+    when using the postings migration topic.
+  replaces: vault
+kafka-cleanup:
+  defaultNamespace: tm-vault
+  description: |
+    Deploy IF kafka-init was deployed. This job should be run at the end of a Vault installation or upgrade
+    to delete Kafka access permissions that are no longer needed.
+# kafka-ca-rotation:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys a CronJob for the periodic rotation of Kafka CA. Refer to the release documentation for more information about secrets management.
+#   replaces: vault
+# kafka-cert-rotation:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys a CronJob for the periodic rotation of Kafka certificates. Refer to the release documentation for more information about secrets management.
+#   replaces: vault
+# cockroachdb-ca-rotation:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys a CronJob for the periodic rotation of Cockroach DB CA for environments using Cockroach rather than Postgres.
+#   replaces: vault
+# cockroachdb-cert-rotation:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component deploys a CronJob for the periodic rotation of Cockroach DB certificates for environments using Cockroach rather than Postgres.
+#   replaces: vault
+# cert-rotation:
+#   defaultNamespace: tm-vault
+#   description: |
+#     This component is for one-off certificate rotation. It is used by vaultctl for the
+#     'rotate-certs' command and cannot be installed directly.
+clusterstat:
+  defaultNamespace: tm-vault
+  description: |
+    Component to run clusterstat tests after vault component install.
+saml-idp:
+  defaultNamespace: tm-vault
+  description: |
+    This component deploys the Vault dummy saml-idp service. This can be used during development and testing before a
+    real SAML V2 Identity Provider (IdP) is configured in production.
+  replaces: vault
