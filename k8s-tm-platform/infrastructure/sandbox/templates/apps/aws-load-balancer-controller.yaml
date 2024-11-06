@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-load-balancer-controller
+  namespace: {{ $.Values.argocdNamespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: aws-load-balancer-controller
+    server: https://kubernetes.default.svc
+  project: platform
+  source:
+    path: applications/aws-load-balancer-controller/{{ $.Values.env }}
+    repoURL: https://github.com/gft-blx/k8s-tm-platform
+    targetRevision: HEAD
+    helm:
+      releaseName: aws-load-balancer-controller
+      valueFiles:
+        - values-{{ $.Values.env }}.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

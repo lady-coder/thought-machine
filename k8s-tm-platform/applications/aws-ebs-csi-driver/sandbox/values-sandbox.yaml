@@ -1,0 +1,29 @@
+aws-ebs-csi-driver:
+  controller:
+    region: eu-central-1
+    replicaCount: 2
+    serviceAccount:
+      create: true
+      name: aws-ebs-csi-driver
+      annotations: 
+        eks.amazonaws.com/role-arn: arn:aws:iam::304319179974:role/sandbox-tm-aws-ebs-csi-driver-eks-irsa-role
+
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - ebs-csi-controller
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+    nodeSelector:
+      eks.amazonaws.com/nodegroup: sandbox-tm-system
+    tolerations:
+    - key: "node-group"
+      operator: "Equal"
+      value: "system"
+      effect: "NoExecute"

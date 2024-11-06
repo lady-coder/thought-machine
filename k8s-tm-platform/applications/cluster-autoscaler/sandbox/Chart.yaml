@@ -1,0 +1,10 @@
+apiVersion: v2
+name: cluster-autoscaler
+description: Cluster Autoscaler
+type: application
+version: 0.1.0
+appVersion: "1.24.0"
+home: https://github.com/kubernetes/autoscaler
+dependencies:
+  - name: cluster-autoscaler
+    version: 9.21.0

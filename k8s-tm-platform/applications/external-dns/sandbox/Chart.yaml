@@ -1,0 +1,11 @@
+apiVersion: v2
+name: external-dns
+description: ExternalDNS synchronizes Kubernetes Ingresses with AWS Route 53.
+type: application
+version: 1.0.0
+appVersion: "0.12.2"
+home: https://github.com/kubernetes-sigs/external-dns
+dependencies:
+  - name: external-dns
+    version: 1.11.0
+    # repository: https://kubernetes-sigs.github.io/external-dns/

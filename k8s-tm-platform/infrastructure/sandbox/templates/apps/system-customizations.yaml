@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: system-customizations
+  namespace: {{ $.Values.argocdNamespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  project: platform
+  source:
+    path: applications/system-customizations/{{ $.Values.env }}
+    repoURL: https://github.com/gft-blx/k8s-tm-platform
+    targetRevision: HEAD
+    helm:
+      releaseName: system-customizations
+      valueFiles:
+        - values-{{ $.Values.env }}.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

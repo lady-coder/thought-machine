@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tm-vault
+  labels:
+    istio-annotation-tm-webhook-tm-vault: enabled
+    istio.io/rev: canary-v1-19

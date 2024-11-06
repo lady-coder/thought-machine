@@ -1,0 +1,29 @@
+aws-load-balancer-controller:
+  clusterName: sandbox-tm
+  image:
+    tag: v2.4.5
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::304319179974:role/sandbox-tm-aws-load-balancer-controller-eks-irsa-role
+  region: eu-central-1
+  vpcId: vpc-0e871f799fbdfdc11
+
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+              - aws-load-balancer-controller
+          topologyKey: "kubernetes.io/hostname"
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: sandbox-tm-system
+  tolerations:
+  - key: "node-group"
+    operator: "Equal"
+    value: "system"
+    effect: "NoExecute"

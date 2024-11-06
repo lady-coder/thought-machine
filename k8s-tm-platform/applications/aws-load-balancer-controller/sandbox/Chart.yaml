@@ -1,0 +1,10 @@
+apiVersion: v2
+name: aws-load-balancer-controller
+description: AWS Load Balancer Controller
+type: application
+version: 1.0.0
+appVersion: "v2.4.5"
+home: https://github.com/kubernetes-sigs/aws-load-balancer-controller
+dependencies:
+  - name: aws-load-balancer-controller
+    version: 1.4.6

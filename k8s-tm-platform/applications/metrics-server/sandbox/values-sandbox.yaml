@@ -1,0 +1,36 @@
+metrics-server:
+
+  image:
+    repository: 336241431902.dkr.ecr.eu-central-1.amazonaws.com/platform/images/metrics-server
+    tag: v0.6.1
+
+  replicas: 2
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values:
+              - metrics-server
+          topologyKey: "kubernetes.io/hostname"
+
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: sandbox-tm-system
+
+  tolerations:
+  - key: "node-group"
+    operator: "Equal"
+    value: "system"
+    effect: "NoExecute"
+
+  service:
+    annotations:
+      monitoring/probe_httpsservice_availability: "true"
+      monitoring/probe_path: "readyz"

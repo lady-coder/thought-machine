@@ -1,0 +1,4 @@
+podDisruptionBudgetcoredns:
+  enabled: true
+  name: "coredns"
+  maxUnavailable: 1

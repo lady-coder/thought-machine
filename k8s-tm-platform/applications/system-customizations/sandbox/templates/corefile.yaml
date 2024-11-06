@@ -1,0 +1,37 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: coredns-patch
+spec:
+  serviceAccountRef:
+    name: coredns-patch
+  patches:
+    corefile-patch:
+      targetObjectRef:
+        apiVersion: v1
+        kind: ConfigMap
+        name: coredns
+      patchTemplate: |
+        data:
+          Corefile: |
+            .:53 {
+              errors
+              health
+              kubernetes cluster.local in-addr.arpa ip6.arpa {
+                pods insecure
+                fallthrough in-addr.arpa ip6.arpa
+              }
+              prometheus :9153
+              forward . /etc/resolv.conf
+              cache 30
+              loop
+              reload
+              loadbalance
+            }
+            tmachine.io:53 {
+              errors
+              cache 30
+              forward . 8.8.8.8
+              reload
+            }
+      patchType: application/strategic-merge-patch+json

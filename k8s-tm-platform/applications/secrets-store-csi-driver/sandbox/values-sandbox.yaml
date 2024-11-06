@@ -1,0 +1,9 @@
+secrets-store-csi-driver:
+  linux:
+    enabled: true
+    tolerations:
+    - key: "node-group"
+      operator: "Equal"
+      value: "system"
+      effect: "NoExecute"
+    priorityClassName: system-node-critical

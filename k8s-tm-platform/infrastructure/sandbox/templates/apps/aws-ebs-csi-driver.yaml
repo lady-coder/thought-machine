@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-ebs-csi-driver
+  namespace: {{ $.Values.argocdNamespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: aws-ebs-csi-driver
+    server: https://kubernetes.default.svc
+  project: platform
+  source:
+    path: applications/aws-ebs-csi-driver/{{ $.Values.env }}
+    repoURL: https://github.com/gft-blx/k8s-tm-platform
+    targetRevision: HEAD
+    helm:
+      releaseName: aws-ebs-csi-driver
+      valueFiles:
+        - values-{{ $.Values.env }}.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,49 @@
+external-dns:
+  image:
+    repository: 336241431902.dkr.ecr.eu-central-1.amazonaws.com/platform/images/external-dns
+    tag: v0.12.2
+
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::304319179974:role/sandbox-tm-external-dns-private-eks-irsa-role
+
+  provider: aws
+  policy: sync
+  txtOwnerId: sandbox-tm
+
+  domainFilters:
+    - tm.blx-demo.com
+
+  sources:
+    - ingress
+
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+              - external-dns-private
+          topologyKey: "kubernetes.io/hostname"
+
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: sandbox-tm-system
+
+  tolerations:
+  - key: "node-group"
+    operator: "Equal"
+    value: "system"
+    effect: "NoExecute"
+
+  extraArgs:
+  - --aws-zone-type=private
+  - "--annotation-filter=alb.ingress.kubernetes.io/scheme in (internal)"
+
+  service:
+    annotations:
+      monitoring/probe_path: "healthz"
+      monitoring/probe_service_availability: "true"

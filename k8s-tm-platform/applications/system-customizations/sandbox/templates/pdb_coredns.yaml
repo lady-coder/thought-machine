@@ -1,0 +1,20 @@
+{{- if .Values.podDisruptionBudgetcoredns.enabled -}}
+apiVersion: {{ include "coredns.pdb.apiVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Values.podDisruptionBudgetcoredns.name }}
+  labels:
+    eks.amazonaws.com/component: coredns
+    k8s-app: kube-dns
+spec:
+  {{- if .Values.podDisruptionBudgetcoredns.minAvailable }}
+  minAvailable: {{ .Values.podDisruptionBudgetcoredns.minAvailable }}
+  {{- end  }}
+  {{- if .Values.podDisruptionBudgetcoredns.maxUnavailable }}
+  maxUnavailable: {{ .Values.podDisruptionBudgetcoredns.maxUnavailable }}
+  {{- end  }}
+  selector:
+    matchLabels:
+      eks.amazonaws.com/component: coredns
+      k8s-app: kube-dns
+{{- end -}}

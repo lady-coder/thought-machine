@@ -1,0 +1,2 @@
+env: sandbox
+argocdNamespace: argo-cd

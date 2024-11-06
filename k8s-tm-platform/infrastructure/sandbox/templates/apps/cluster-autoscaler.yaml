@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-autoscaler
+  namespace: {{ $.Values.argocdNamespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: cluster-autoscaler
+    server: https://kubernetes.default.svc
+  project: platform
+  source:
+    path: applications/cluster-autoscaler/{{ $.Values.env }}
+    repoURL: https://github.com/gft-blx/k8s-tm-platform
+    targetRevision: HEAD
+    helm:
+      releaseName: cluster-autoscaler
+      valueFiles:
+        - values-{{ $.Values.env }}.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,49 @@
+cluster-autoscaler:
+
+  image:
+    repository: 336241431902.dkr.ecr.eu-central-1.amazonaws.com/platform/images/cluster-autoscaler
+    tag: v1.24.1
+
+  rbac:
+    serviceAccount:
+      name: "cluster-autoscaler"
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::304319179974:role/sandbox-tm-cluster-autoscaler-eks-irsa-role
+
+  cloudProvider: aws
+  awsRegion: eu-central-1
+  autoDiscovery:
+    clusterName: sandbox-tm
+    tags:
+      - k8s.io/cluster-autoscaler/enabled
+      - k8s.io/cluster-autoscaler/{{ .Values.autoDiscovery.clusterName }}
+      - kubernetes.io/cluster/{{ .Values.autoDiscovery.clusterName }}
+
+  extraArgs:
+    skip-nodes-with-local-storage: false
+    skip-nodes-with-system-pods: false
+
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - cluster-autoscaler
+        topologyKey: "kubernetes.io/hostname"
+
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: sandbox-tm-system
+
+  tolerations:
+  - key: "node-group"
+    operator: "Equal"
+    value: "system"
+    effect: "NoExecute"
+
+  service:
+    annotations:
+      monitoring/probe_path: "health-check"
+      monitoring/probe_service_availability: "true"
