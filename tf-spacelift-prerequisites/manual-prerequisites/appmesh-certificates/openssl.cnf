@@ -1,0 +1,9 @@
+[ req ]
+x509_extensions = v3_ca
+distinguished_name = req_distinguished_name
+
+[ req_distinguished_name ]
+
+[ v3_ca ]
+keyUsage = critical, digitalSignature, keyEncipherment, keyCertSign
+basicConstraints = critical, CA:TRUE
