@@ -1,0 +1,84 @@
+BANKLITEX ARGOCD GITHUB APP
+
+APP ID 700971
+
+Instllation id 45099663
+
+Client id Iv1.02d9ca9ffde7ba71
+
+Client secrets
+03487122c23acc1777add6547d705fbb25723225
+
+key pem in downloads/banklitex-argocd-github-app.2023-12-14.private-key
+
+BANKLITEX GHA GITHUB APP
+
+APP ID 
+700989
+
+Instllation id
+45099933
+
+Client id
+Iv1.de6867ab0a409803
+
+Client secrets 
+0f069ecb9bcf909fe9f49e6ad5a13339347bd38e
+
+pem
+/Users/jrns/Downloads banklitex-gha-github-app.2023-12-14.private-key
+
+
+TMUK ARGOCD GITHUB OAUTH APP
+
+APP ID 
+2431452
+
+Client id
+aa077e48f0fece5c2709
+
+client secrets
+e6a3c32dbfeab22ef4acd56b360aa9e9c6837319
+
+ARGOCD password
+LW1ptIV3q--6gFkZ
+
+
+
+
+
+
+
+NEW accesses from TYLER email
+-------------------------------
+
+
+TMUK ARGOCD GITHUB APP
+----------------------
+862029
+
+
+client id Iv1.6eca293407c805bc
+tmuk-argocd-github-app.2024-03-24.private-key.pem
+
+TMUK ARGOCD GITHUB OAUTH APP
+-----------------------------
+
+App id 2431452
+Client id aa077e48f0fece5c2709
+Cleint secrets e6a3c32dbfeab22ef4acd56b360aa9e9c6837319
+notes
+Repository Access:
+
+gft-blx/tmuk-tf-sandbox-tm-infra
+gft-blx/tmuk-tf-sandbox-tm-networking
+gft-blx/tmuk-k8s-tm-platform
+gft-blx/tmuk-tf-spacelift-prerequisites
+gft-blx/tmuk-automation-tools
+gft-blx/tmuk-tf-infra-maintenance
+
+
+Asif, Ameen <aminasif@amazon.com>
+nwglynn@amazon.com
+rokura@amazon.co.uk
+hutchcj@amazon.co.uk

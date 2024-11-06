@@ -1,0 +1,60 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2024-02-15T16:46:08Z"
+  finalizers:
+  - service.kubernetes.io/load-balancer-cleanup
+  labels:
+    app: istio-ingressgateway
+    install.operator.istio.io/owning-resource: installed-state-canary-v1-19
+    install.operator.istio.io/owning-resource-namespace: istio-system
+    istio: ingressgateway
+    istio.io/rev: canary-v1-19
+    operator.istio.io/component: IngressGateways
+    operator.istio.io/managed: Reconcile
+    operator.istio.io/version: 1.19.3
+    release: istio
+  name: istio-ingressgateway
+  namespace: istio-system
+  resourceVersion: "16324132"
+  uid: 76e4ae2f-4940-43d6-8cbc-707d8e1b86fb
+spec:
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 10.100.33.25
+  clusterIPs:
+  - 10.100.33.25
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: status-port
+    nodePort: 32453
+    port: 15021
+    protocol: TCP
+    targetPort: 15021
+  - name: http2
+    nodePort: 31339
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  - name: https
+    nodePort: 30661
+    port: 443
+       protocol: TCP
+    targetPort: 8443
+  selector:
+    app: istio-ingressgateway
+    istio: ingressgateway
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - hostname: a76e4ae2f494043d68cbc707d8e1b86f-747669497.eu-west-2.elb.amazonaws.com
+                                                                                                                                                                                  59,1          Bot

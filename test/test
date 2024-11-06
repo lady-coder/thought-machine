@@ -1,0 +1,34 @@
+kubectl describe ingress tm-ingress-internet  -n istio-system
+
+kubectl get svc -A
+kubectl describe svc  aws-load-balancer-webhook-service  -n aws-load-balancer-controller
+kubectl describe svc istiod-canary-v1-19  -n istio-system
+
+kubectl get ingress -n istio-system
+
+kubectl -n aws-load-balancer-controller get svc aws-load-balancer-webhook-service
+
+kubectl -n istio-system get svc istiod-canary-v1-19
+
+ kubectl -n istio-system logs istio-ingressgateway-787498c9d7-tl8f8
+
+ kubectl -n istio-system logs  istiod-canary-v1-19-6578c579d7-fp59c
+
+ -------
+ kubectl get ns --show-labels
+
+ kubectl get crowns -A
+ --------
+
+cd /home/ssm-user
+mkdir vaultpackage
+aws s3 cp s3://sandbox-051939627954-tm-jumphost-admin-operational-s3 /home/ssm-user/vaultpackage/ --recursive
+cd vaultpackage/vault-package
+ export PATH=$PATH:/home/ssm-user/vaultpackage/vault-package
+ chmod +x vaultctl
+
+ vaultctl install webhook-operator istio observability -v 5.1.1-values.yaml -r vault-5.1.1.release  --continuous-reconcile    
+
+
+
+ kubectl -n kube-system delete clusterrolebinding eks:podsecuritypolicy:authenticated

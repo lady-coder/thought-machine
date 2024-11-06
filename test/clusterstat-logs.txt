@@ -1,0 +1,234 @@
+== RUN   TestClusterstat
+=== RUN   TestClusterstat/*monitoring_test.TestNamespaceExists
+=== PAUSE TestClusterstat/*monitoring_test.TestNamespaceExists
+=== RUN   TestClusterstat/*monitoring_test.TestPODeployment
+=== PAUSE TestClusterstat/*monitoring_test.TestPODeployment
+=== RUN   TestClusterstat/*monitoring_test.TestPOService
+=== PAUSE TestClusterstat/*monitoring_test.TestPOService
+=== RUN   TestClusterstat/*monitoring_test.TestPOServiceAccount
+=== PAUSE TestClusterstat/*monitoring_test.TestPOServiceAccount
+=== RUN   TestClusterstat/*monitoring_test.TestStatefulSets
+=== PAUSE TestClusterstat/*monitoring_test.TestStatefulSets
+=== RUN   TestClusterstat/*monitoring_test.TestDeployments
+=== PAUSE TestClusterstat/*monitoring_test.TestDeployments
+=== RUN   TestClusterstat/*monitoring_test.TestDaemonSets
+=== PAUSE TestClusterstat/*monitoring_test.TestDaemonSets
+=== RUN   TestClusterstat/*monitoring_test.TestServices
+=== PAUSE TestClusterstat/*monitoring_test.TestServices
+=== RUN   TestClusterstat/*monitoring_test.TestIngresses
+=== PAUSE TestClusterstat/*monitoring_test.TestIngresses
+=== RUN   TestClusterstat/*monitoring_test.TestConfigMaps
+=== PAUSE TestClusterstat/*monitoring_test.TestConfigMaps
+=== RUN   TestClusterstat/*monitoring_test.TestSecrets
+=== PAUSE TestClusterstat/*monitoring_test.TestSecrets
+=== RUN   TestClusterstat/*monitoring_test.TestServiceAccounts
+=== PAUSE TestClusterstat/*monitoring_test.TestServiceAccounts
+=== RUN   TestClusterstat/*monitoring_test.TestRoles
+=== PAUSE TestClusterstat/*monitoring_test.TestRoles
+=== RUN   TestClusterstat/*monitoring_test.TestRoleBindings
+=== PAUSE TestClusterstat/*monitoring_test.TestRoleBindings
+=== RUN   TestClusterstat/*monitoringstat.TestPodRestarts
+=== PAUSE TestClusterstat/*monitoringstat.TestPodRestarts
+=== RUN   TestClusterstat/*monitoring_test.TestPOClusterRole
+=== PAUSE TestClusterstat/*monitoring_test.TestPOClusterRole
+=== RUN   TestClusterstat/*monitoring_test.TestPOClusterRoleBinding
+=== PAUSE TestClusterstat/*monitoring_test.TestPOClusterRoleBinding
+=== RUN   TestClusterstat/*monitoring_test.TestClusterRoles
+=== PAUSE TestClusterstat/*monitoring_test.TestClusterRoles
+=== RUN   TestClusterstat/*monitoring_test.TestClusterRoleBindings
+=== PAUSE TestClusterstat/*monitoring_test.TestClusterRoleBindings
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets#01
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets#01
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets#02
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets#02
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets#03
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets#03
+=== RUN   TestClusterstat/*monitoringstat.TestThanosStores
+=== PAUSE TestClusterstat/*monitoringstat.TestThanosStores
+=== RUN   TestClusterstat/*monitoringstat.TestGrafanaAvailable
+=== PAUSE TestClusterstat/*monitoringstat.TestGrafanaAvailable
+=== RUN   TestClusterstat/*monitoringstat.TestGrafanaResources
+=== PAUSE TestClusterstat/*monitoringstat.TestGrafanaResources
+=== RUN   TestClusterstat/*namespaced_monitoring_test.TestStatefulSets
+=== PAUSE TestClusterstat/*namespaced_monitoring_test.TestStatefulSets
+=== RUN   TestClusterstat/*namespaced_monitoring_test.TestDeployments
+=== PAUSE TestClusterstat/*namespaced_monitoring_test.TestDeployments
+=== RUN   TestClusterstat/*namespaced_monitoring_test.TestServices
+=== PAUSE TestClusterstat/*namespaced_monitoring_test.TestServices
+=== RUN   TestClusterstat/*namespaced_monitoring_test.TestConfigMaps
+=== PAUSE TestClusterstat/*namespaced_monitoring_test.TestConfigMaps
+=== RUN   TestClusterstat/*namespaced_monitoring_test.TestSecrets
+=== PAUSE TestClusterstat/*namespaced_monitoring_test.TestSecrets
+=== RUN   TestClusterstat/*namespaced_monitoring_test.TestServiceAccounts
+=== PAUSE TestClusterstat/*namespaced_monitoring_test.TestServiceAccounts
+=== RUN   TestClusterstat/*namespaced_monitoring_test.TestRoles
+=== PAUSE TestClusterstat/*namespaced_monitoring_test.TestRoles
+=== RUN   TestClusterstat/*namespaced_monitoring_test.TestRoleBindings
+=== PAUSE TestClusterstat/*namespaced_monitoring_test.TestRoleBindings
+=== RUN   TestClusterstat/*namespaced_monitoring_test.TestClusterRoleBindings
+=== PAUSE TestClusterstat/*namespaced_monitoring_test.TestClusterRoleBindings
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets#04
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets#04
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets#05
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets#05
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets#06
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets#06
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets#07
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets#07
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets#08
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets#08
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusTargets#09
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusTargets#09
+=== RUN   TestClusterstat/*monitoringstat.TestPrometheusMetrics
+=== PAUSE TestClusterstat/*monitoringstat.TestPrometheusMetrics
+=== RUN   TestClusterstat/*monitoringstat.TestThanosStores#01
+=== PAUSE TestClusterstat/*monitoringstat.TestThanosStores#01
+=== CONT  TestClusterstat/*monitoring_test.TestNamespaceExists
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets#03
+=== CONT  TestClusterstat/*namespaced_monitoring_test.TestRoleBindings
+=== CONT  TestClusterstat/*monitoring_test.TestServiceAccounts
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets#02
+=== CONT  TestClusterstat/*monitoring_test.TestDaemonSets
+=== CONT  TestClusterstat/*monitoring_test.TestIngresses
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets#08
+=== NAME  TestClusterstat/*monitoring_test.TestNamespaceExists
+    testing.go:132: Failed to get namespaces: Get "https://10.100.0.1:443/api/v1/namespaces": EOF
+=== NAME  TestClusterstat/*namespaced_monitoring_test.TestRoleBindings
+    testing.go:132: Failed to get rolebindings: Get "https://10.100.0.1:443/apis/rbac.authorization.k8s.io/v1/namespaces/tm-vault/rolebindings": EOF
+=== CONT  TestClusterstat/*monitoring_test.TestServices
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets#02
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-monitoring/services/prometheus-kubelet:webui/proxy/api/v1/targets": EOF
+=== CONT  TestClusterstat/*namespaced_monitoring_test.TestServiceAccounts
+=== CONT  TestClusterstat/*namespaced_monitoring_test.TestRoles
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets#08
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/services/prometheus-postgres:webui/proxy/api/v1/targets": EOF
+=== CONT  TestClusterstat/*namespaced_monitoring_test.TestConfigMaps
+=== CONT  TestClusterstat/*monitoring_test.TestSecrets
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets#03
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-monitoring/services/prometheus-cardinality:webui/proxy/api/v1/targets": EOF
+=== CONT  TestClusterstat/*monitoring_test.TestStatefulSets
+=== CONT  TestClusterstat/*monitoringstat.TestGrafanaResources
+=== CONT  TestClusterstat/*monitoring_test.TestDeployments
+=== CONT  TestClusterstat/*namespaced_monitoring_test.TestServices
+=== CONT  TestClusterstat/*monitoring_test.TestPOServiceAccount
+=== CONT  TestClusterstat/*namespaced_monitoring_test.TestSecrets
+=== CONT  TestClusterstat/*namespaced_monitoring_test.TestDeployments
+=== CONT  TestClusterstat/*namespaced_monitoring_test.TestStatefulSets
+=== NAME  TestClusterstat/*namespaced_monitoring_test.TestDeployments
+    testing.go:132: Failed to get deployments: Get "https://10.100.0.1:443/apis/apps/v1/namespaces/tm-vault/deployments": EOF
+=== CONT  TestClusterstat/*monitoringstat.TestGrafanaAvailable
+=== NAME  TestClusterstat/*namespaced_monitoring_test.TestConfigMaps
+    testing.go:132: Failed to get configmaps: Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/configmaps": EOF
+=== CONT  TestClusterstat/*monitoring_test.TestPOClusterRoleBinding
+=== NAME  TestClusterstat/*namespaced_monitoring_test.TestSecrets
+    testing.go:132: Failed to get secrets: Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/secrets": read tcp 172.21.242.127:50098->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== NAME  TestClusterstat/*namespaced_monitoring_test.TestRoles
+    testing.go:132: Failed to get roles: Get "https://10.100.0.1:443/apis/rbac.authorization.k8s.io/v1/namespaces/tm-vault/roles": read tcp 172.21.242.127:50100->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets#01
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets
+=== NAME  TestClusterstat/*monitoringstat.TestGrafanaResources
+    testing.go:132: Error using Grafana Folder/Dashboard Search API: HTTP error 0: returns
+=== NAME  TestClusterstat/*namespaced_monitoring_test.TestServices
+    testing.go:132: Failed to get services: Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/services": read tcp 172.21.242.127:50126->10.100.0.1:443: read: connection reset by peer - errorfrom a previous attempt: EOF
+=== CONT  TestClusterstat/*monitoring_test.TestClusterRoles
+=== CONT  TestClusterstat/*monitoring_test.TestClusterRoleBindings
+=== NAME  TestClusterstat/*namespaced_monitoring_test.TestStatefulSets
+    testing.go:132: Failed to get statefulsets: Get "https://10.100.0.1:443/apis/apps/v1/namespaces/tm-vault/statefulsets": read tcp 172.21.242.127:50136->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets#05
+=== NAME  TestClusterstat/*namespaced_monitoring_test.TestServiceAccounts
+    testing.go:132: Failed to get serviceaccounts: Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/serviceaccounts": EOF
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets#07
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-monitoring/services/prometheus-kubernetes:webui/proxy/api/v1/targets": read tcp172.21.242.127:52668->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets#06
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets#07
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/services/prometheus-kubernetes:webui/proxy/api/v1/targets": read tcp 172.21.242.127:52748->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== NAME  TestClusterstat/*monitoring_test.TestClusterRoles
+    testing.go:132: Failed to get clusterroles: Get "https://10.100.0.1:443/apis/rbac.authorization.k8s.io/v1/clusterroles": read tcp 172.21.242.127:52692->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== CONT  TestClusterstat/*monitoring_test.TestPOService
+=== CONT  TestClusterstat/*monitoringstat.TestThanosStores#01
+=== CONT  TestClusterstat/*monitoringstat.TestPodRestarts
+=== CONT  TestClusterstat/*monitoring_test.TestPOClusterRole
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets#01
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-monitoring/services/prometheus-istio:webui/proxy/api/v1/targets": read tcp 172.21.242.127:52726->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== NAME  TestClusterstat/*monitoringstat.TestGrafanaAvailable
+    testing.go:132: Grafana API not available: HTTP error 0: returns
+=== CONT  TestClusterstat/*monitoring_test.TestPODeployment
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets#05
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/services/prometheus-kafka:webui/proxy/api/v1/targets": read tcp 172.21.242.127:52734->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== NAME  TestClusterstat/*monitoring_test.TestPOClusterRoleBinding
+    testing.go:132: Failed to get clusterrolebindings: Get "https://10.100.0.1:443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings": read tcp 172.21.242.127:52694->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusMetrics
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets#09
+=== CONT  TestClusterstat/*namespaced_monitoring_test.TestClusterRoleBindings
+=== NAME  TestClusterstat/*monitoring_test.TestClusterRoleBindings
+    testing.go:132: Failed to get clusterrolebindings: Get "https://10.100.0.1:443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings": read tcp 172.21.242.127:52678->10.100.0.1:443: read: connection reset by peer - error from a previous attempt: EOF
+=== CONT  TestClusterstat/*monitoring_test.TestRoleBindings
+=== CONT  TestClusterstat/*monitoringstat.TestPrometheusTargets#04
+=== CONT  TestClusterstat/*monitoringstat.TestThanosStores
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusMetrics
+    testing.go:132: query count_over_time(kafka:topic_consumer_group_lag_by_service[30m]) errored: %!w(*url.Error=&{Post /api/v1/query 0xc0004835c0})
+=== CONT  TestClusterstat/*monitoring_test.TestRoles
+=== CONT  TestClusterstat/*monitoring_test.TestConfigMaps
+=== NAME  TestClusterstat/*monitoringstat.TestThanosStores
+    testing.go:132: Failed to read stores page: Get "https://10.100.0.1:443/api/v1/namespaces/tm-monitoring/services/thanos-query:thanoshttp/proxy/api/v1/stores": EOF
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets#09
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/services/prometheus-redis:webui/proxy/api/v1/targets": EOF
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets#04
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/services/prometheus-vault:webui/proxy/api/v1/targets": EOF - error from aprevious attempt: read tcp 172.21.242.127:37214->10.100.0.1:443: read: connection reset by peer
+=== NAME  TestClusterstat/*namespaced_monitoring_test.TestClusterRoleBindings
+    testing.go:132: Failed to get clusterrolebindings: Get "https://10.100.0.1:443/apis/rbac.authorization.k8s.io/v1/clusterrolebindings": EOF
+=== NAME  TestClusterstat/*monitoring_test.TestPOClusterRole
+    testing.go:132: Failed to get clusterroles: Get "https://10.100.0.1:443/apis/rbac.authorization.k8s.io/v1/clusterroles": EOF
+=== NAME  TestClusterstat/*monitoringstat.TestPrometheusTargets#06
+    testing.go:132: Failed to read targets: Get "/api/v1/targets": Get "https://10.100.0.1:443/api/v1/namespaces/tm-vault/services/prometheus-kubelet:webui/proxy/api/v1/targets": EOF
+=== NAME  TestClusterstat/*monitoringstat.TestThanosStores#01
+    testing.go:132: Failed to read stores page: Get "https://10.100.0.1:443/api/v1/namespaces/tm-monitoring/services/thanos-query:thanoshttp/proxy/api/v1/stores": EOF
+--- FAIL: TestClusterstat (0.00s)
+    --- FAIL: TestClusterstat/*monitoring_test.TestNamespaceExists (10.02s)
+    --- FAIL: TestClusterstat/*namespaced_monitoring_test.TestRoleBindings (10.02s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets#02 (10.02s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestServices (0.00s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestIngresses (10.02s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets#08 (10.02s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestServiceAccounts (10.02s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestDaemonSets (10.02s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestSecrets (0.00s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets#03 (10.02s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestStatefulSets (0.00s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestPOServiceAccount (0.00s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestDeployments (0.00s)
+    --- FAIL: TestClusterstat/*namespaced_monitoring_test.TestDeployments (10.01s)
+    --- FAIL: TestClusterstat/*namespaced_monitoring_test.TestConfigMaps (10.01s)
+    --- FAIL: TestClusterstat/*namespaced_monitoring_test.TestSecrets (10.01s)
+    --- FAIL: TestClusterstat/*namespaced_monitoring_test.TestRoles (10.01s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestGrafanaResources (10.01s)
+    --- FAIL: TestClusterstat/*namespaced_monitoring_test.TestServices (10.01s)
+    --- FAIL: TestClusterstat/*namespaced_monitoring_test.TestStatefulSets (10.01s)
+    --- FAIL: TestClusterstat/*namespaced_monitoring_test.TestServiceAccounts (10.01s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets (10.01s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets#07 (10.01s)
+    --- FAIL: TestClusterstat/*monitoring_test.TestClusterRoles (10.01s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestPOService (0.00s)
+    --- SKIP: TestClusterstat/*monitoringstat.TestPodRestarts (0.00s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets#01 (10.01s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestGrafanaAvailable (10.01s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets#05 (10.01s)
+    --- FAIL: TestClusterstat/*monitoring_test.TestPOClusterRoleBinding (10.01s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestPODeployment (0.00s)
+    --- FAIL: TestClusterstat/*monitoring_test.TestClusterRoleBindings (10.01s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestRoleBindings (0.00s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusMetrics (0.00s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestRoles (0.00s)
+    --- SKIP: TestClusterstat/*monitoring_test.TestConfigMaps (0.00s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestThanosStores (10.01s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets#09 (10.01s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets#04 (10.01s)
+    --- FAIL: TestClusterstat/*namespaced_monitoring_test.TestClusterRoleBindings (10.01s)
+    --- FAIL: TestClusterstat/*monitoring_test.TestPOClusterRole (10.01s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestPrometheusTargets#06 (10.01s)
+    --- FAIL: TestClusterstat/*monitoringstat.TestThanosStores#01 (10.01s)
+FAIL
+sh-4.2$

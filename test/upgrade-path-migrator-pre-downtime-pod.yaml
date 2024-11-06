@@ -1,0 +1,359 @@
+h-4.2$ kubectl get pod upgrade-path-migrator-pre-downtime-vxn2h -n tm-vault -oyaml
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    sidecar.istio.io/logLevel: info
+    sidecar.istio.io/proxyCPU: 50m
+    sidecar.istio.io/proxyCPULimit: 2000m
+    sidecar.istio.io/proxyMemory: 256Mi
+    sidecar.istio.io/proxyMemoryLimit: 1Gi
+    sidecar.istio.io/statsInclusionPrefixes: cluster.outbound,server.,listener.
+    traffic.sidecar.istio.io/excludeInboundPorts: 13434,5432
+    traffic.sidecar.istio.io/excludeOutboundIPRanges: ""
+    traffic.sidecar.istio.io/excludeOutboundPorts: 9096,5432
+  creationTimestamp: "2024-02-01T10:11:44Z"
+  finalizers:
+  - batch.kubernetes.io/job-tracking
+  generateName: upgrade-path-migrator-pre-downtime-
+  labels:
+    app: upgrade-path-migrator-pre-downtime
+    controller-uid: 7731fd3b-c0d9-4432-ad12-bc02cbb950ea
+    job-name: upgrade-path-migrator-pre-downtime
+    project: vault
+  name: upgrade-path-migrator-pre-downtime-vxn2h
+  namespace: tm-vault
+  ownerReferences:
+  - apiVersion: batch/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Job
+    name: upgrade-path-migrator-pre-downtime
+    uid: 7731fd3b-c0d9-4432-ad12-bc02cbb950ea
+  resourceVersion: "10832423"
+  uid: 71e6ce05-27fe-4880-96cc-067d9adc0605
+spec:
+  containers:
+  - args:
+    - --db_statement_timeout
+    - 30s
+    - --db_total_transaction_timeout
+    - 30s
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.name
+    - name: OTEL_SERVICE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.labels['app']
+    - name: AWS_STS_REGIONAL_ENDPOINTS
+      value: regional
+    - name: AWS_DEFAULT_REGION
+      value: eu-west-2
+    - name: AWS_REGION
+      value: eu-west-2
+    - name: AWS_ROLE_ARN
+      value: arn:aws:iam::051939627954:role/tm-prefix/sandbox-tm/upgrade-path-migrator-pre-downtime_tm-vault
+    - name: AWS_WEB_IDENTITY_TOKEN_FILE
+      value: /var/run/secrets/eks.amazonaws.com/serviceaccount/token
+    envFrom:
+    - configMapRef:
+        name: upgrade-path-pre-downtime-config-upgrade-path-pre-downtime-a5c998e7bf
+    - configMapRef:
+        name: vault-postings-db-config-upgrade-path-pre-downtime-2f235aca44
+      prefix: KERNEL_POSTINGS_
+    - configMapRef:
+        name: vault-balance-db-config-upgrade-path-pre-downtime-6a85dffb92
+      prefix: KERNEL_BALANCES_
+    - configMapRef:
+        name: vault-core-db-config-upgrade-path-pre-downtime-a190323890
+      prefix: KERNEL_
+    - configMapRef:
+        name: warm-storage-db-config-upgrade-path-pre-downtime-57daf49a54
+      prefix: WARM_STORAGE_
+    - configMapRef:
+        name: core-db-config-upgrade-path-pre-downtime-08ffacdb37
+    - configMapRef:
+        name: tracing-config-upgrade-path-pre-downtime-4c3cb9e649
+    - configMapRef:
+        name: service-mesh-config-upgrade-path-pre-downtime-bb180daa6d
+    image: 766697957974.dkr.ecr.eu-central-1.amazonaws.com/3rdparty/tm/vault/core/upgrade_path/migrator/pre_downtime@sha256:553da86a0d01f8bf1a0ac9ac0f85f45987fd9ad0e9c01d011feffdbafb3629b8
+    imagePullPolicy: IfNotPresent
+    name: main
+    ports:
+    - containerPort: 8098
+      name: grpc
+      protocol: TCP
+    - containerPort: 13434
+      name: prometheus
+      protocol: TCP
+    resources:
+      limits:
+        cpu: 1500m
+        memory: 4Gi
+      requests:
+        cpu: 500m
+        memory: 1Gi
+    securityContext:
+      allowPrivilegeEscalation: false
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/hault/secret/vault-balance/database
+      name: kernel-balance-secrets-volume
+      readOnly: true
+    - mountPath: /etc/hault/secret/core/database
+      name: core-db-secrets-volume
+      readOnly: true
+    - mountPath: /etc/vault/service-discovery
+      name: sd-volume
+    - mountPath: /etc/vault/upgrade_path
+      name: upgrade-path-config-volume
+    - mountPath: /etc/hault/secret/vault-core/database
+      name: kernel-secrets-db-volume
+      readOnly: true
+    - mountPath: /etc/hault/secret/vault-postings/database
+      name: kernel-postings-secrets-db-volume
+      readOnly: true
+    - mountPath: /etc/hault/secret/warm-storage/database
+      name: warm-storage-db-secrets-volume
+      readOnly: true
+    - mountPath: /etc/hault
+      name: hault-volume
+      readOnly: true
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-4kllh
+      readOnly: true
+    - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+      name: aws-iam-token
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  initContainers:
+  - env:
+    - name: SECRET_KV_BACKEND
+      valueFrom:
+        configMapKeyRef:
+          key: SECRET_MOUNT_POINT
+          name: hault-config-teller-upgrade-path-pre-downtime-aa174eaa71
+    - name: VAULT_ADDR
+      valueFrom:
+        configMapKeyRef:
+          key: address
+          name: hault-config-teller-upgrade-path-pre-downtime-aa174eaa71
+    - name: NAMESPACE
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.namespace
+    - name: APP_NAME
+      value: upgrade-path-migrator-pre-downtime
+    - name: AWS_STS_REGIONAL_ENDPOINTS
+      value: regional
+    - name: AWS_DEFAULT_REGION
+      value: eu-west-2
+    - name: AWS_REGION
+      value: eu-west-2
+    - name: AWS_ROLE_ARN
+      value: arn:aws:iam::051939627954:role/tm-prefix/sandbox-tm/upgrade-path-migrator-pre-downtime_tm-vault
+    - name: AWS_WEB_IDENTITY_TOKEN_FILE
+      value: /var/run/secrets/eks.amazonaws.com/serviceaccount/token
+    envFrom:
+    - configMapRef:
+        name: hault-config-teller-upgrade-path-pre-downtime-aa174eaa71
+    image: 766697957974.dkr.ecr.eu-central-1.amazonaws.com/3rdparty/tm/hault/teller/init@sha256:e06c84b490870eb6b999093c9a2a3978a0e968ad8d6862949b069763fedc28f7
+    imagePullPolicy: IfNotPresent
+    name: teller-init
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      runAsGroup: 37100
+      runAsUser: 37100
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/hault/secret/vault-balance/database
+      name: kernel-balance-secrets-volume
+    - mountPath: /etc/hault/secret/core/database
+      name: core-db-secrets-volume
+    - mountPath: /etc/hault/secret/vault-core/database
+      name: kernel-secrets-db-volume
+    - mountPath: /etc/hault/secret/vault-postings/database
+      name: kernel-postings-secrets-db-volume
+    - mountPath: /etc/hault/secret/warm-storage/database
+      name: warm-storage-db-secrets-volume
+    - mountPath: /etc/mount/
+      name: mounted-volume-csi
+      readOnly: true
+    - mountPath: /etc/hault
+      name: hault-volume
+    - mountPath: /etc/hault/config
+      name: hault-config-volume
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-4kllh
+      readOnly: true
+    - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+      name: aws-iam-token
+      readOnly: true
+  nodeName: ip-172-21-74-184.eu-west-2.compute.internal
+  preemptionPolicy: PreemptLowerPriority
+  priority: 30
+  priorityClassName: category-a
+  restartPolicy: OnFailure
+  schedulerName: default-scheduler
+  securityContext:
+    runAsGroup: 37100
+    runAsUser: 37100
+  serviceAccount: upgrade-path-migrator-pre-downtime
+  serviceAccountName: upgrade-path-migrator-pre-downtime
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  topologySpreadConstraints:
+  - labelSelector:
+      matchLabels:
+        app: upgrade-path-migrator-pre-downtime
+        project: vault
+    maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+  volumes:
+  - name: aws-iam-token
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          audience: sts.amazonaws.com
+          expirationSeconds: 86400
+          path: token
+  - configMap:
+      defaultMode: 420
+      name: core-db-config-upgrade-path-pre-downtime-08ffacdb37
+    name: core-db-config-volume
+  - configMap:
+      defaultMode: 420
+      name: warm-storage-db-config-upgrade-path-pre-downtime-57daf49a54
+    name: warm-storage-db-config-volume
+  - configMap:
+      defaultMode: 420
+      name: vault-service-discovery-config-upgrade-path-pre-downtime-76547523bf
+    name: sd-volume
+  - configMap:
+      defaultMode: 420
+      name: upgrade-path-pre-downtime-config-upgrade-path-pre-downtime-a5c998e7bf
+    name: upgrade-path-config-volume
+  - emptyDir:
+      medium: Memory
+    name: hault-volume
+  - configMap:
+      defaultMode: 420
+      name: hault-config-teller-upgrade-path-pre-downtime-aa174eaa71
+    name: hault-config-volume
+  - emptyDir:
+      medium: Memory
+    name: kernel-balance-secrets-volume
+  - emptyDir:
+      medium: Memory
+    name: core-db-secrets-volume
+  - emptyDir:
+      medium: Memory
+    name: kernel-secrets-db-volume
+  - emptyDir:
+      medium: Memory
+    name: kernel-postings-secrets-db-volume
+  - emptyDir:
+      medium: Memory
+    name: warm-storage-db-secrets-volume
+  - csi:
+      driver: secrets-store.csi.k8s.io
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: upgrade-path-migrator-pre-downtime
+    name: mounted-volume-csi
+  - name: kube-api-access-4kllh
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2024-02-01T10:11:46Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2024-02-01T10:11:49Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2024-02-01T10:11:49Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2024-02-01T10:11:44Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://7b9bbad7419699c52d803fdd74f7d51e6bff030c2fb98cf8d8235140f545fc03
+    image: sha256:15d101919ee4156c61b6613647b4e83fd2c8658126cffe8c06c433322e77ba0d
+    imageID: 766697957974.dkr.ecr.eu-central-1.amazonaws.com/3rdparty/tm/vault/core/upgrade_path/migrator/pre_downtime@sha256:553da86a0d01f8bf1a0ac9ac0f85f45987fd9ad0e9c01d011feffdbafb3629b8
+    lastState: {}
+    name: main
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2024-02-01T10:11:48Z"
+  hostIP: 172.21.74.184
+  initContainerStatuses:
+  - containerID: containerd://634b57e9ccb4113e329c425e9b1bf13a68196f653e998ee5bb6204397968b71d
+    image: sha256:8d7b6aab4045a4849a51baf8c713fd16a6743357018d7ea3707d6eae2f5328fb
+    imageID: 766697957974.dkr.ecr.eu-central-1.amazonaws.com/3rdparty/tm/hault/teller/init@sha256:e06c84b490870eb6b999093c9a2a3978a0e968ad8d6862949b069763fedc28f7
+    lastState: {}
+    name: teller-init
+    ready: true
+    restartCount: 0
+    state:
+      terminated:
+        containerID: containerd://634b57e9ccb4113e329c425e9b1bf13a68196f653e998ee5bb6204397968b71d
+        exitCode: 0
+        finishedAt: "2024-02-01T10:11:45Z"
+        reason: Completed
+        startedAt: "2024-02-01T10:11:45Z"
+  phase: Running
+  podIP: 172.21.76.107
+  podIPs:
+  - ip: 172.21.76.107
+  qosClass: Burstable
+  startTime: "2024-02-01T10:11:44Z"
