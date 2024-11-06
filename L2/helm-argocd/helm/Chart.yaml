@@ -1,0 +1,9 @@
+apiVersion: v2
+name: argo-cd
+description: ArgoCD
+type: application
+version: 5.48.0
+appVersion: "v2.8.5"
+dependencies:
+  - name: argo-cd
+    version: 5.48.0
