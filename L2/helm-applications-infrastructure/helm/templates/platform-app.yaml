@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform
+  namespace: {{ .Values.namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: {{ .Values.namespace }}
+    server: https://kubernetes.default.svc
+  project: platform
+  source:
+    repoURL: {{ .Values.githubOrgUrl }}/{{ .Values.platformGitOpsRepoName }}
+    path: {{ .Values.infrastructure_path }}
+    targetRevision: HEAD
+    helm:
+      releaseName: platform
+      valueFiles:
+        - values-{{ .Values.environment }}.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- if .Values.applicationsGitOpsRepoName }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: applications
+  namespace: {{ .Values.namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: {{ .Values.namespace }}
+    server: https://kubernetes.default.svc
+  project: applications
+  source:
+    repoURL: {{ .Values.githubOrgUrl }}/{{ .Values.applicationsGitOpsRepoName }}
+    path: {{ .Values.infrastructure_path }}
+    targetRevision: HEAD
+    helm:
+      releaseName: applications
+      valueFiles:
+        - values-{{ .Values.environment }}.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end -}}

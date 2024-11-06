@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform
+  namespace: {{ .Values.namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Manage K8S platform components
+  sourceRepos: # Allow manifests to be deployed from any Git repos
+  - '*'
+  destinations: # Allow applications to be deployed in all namespaces in the cluster
+  - namespace: "*"
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist: # Allow all cluster-scoped resources to be created
+  - group: "*"
+    kind: "*"
+{{- if .Values.applicationsGitOpsRepoName }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: applications
+  namespace: {{ .Values.namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Manage K8S microservices and automation apps
+  sourceRepos: # Allow manifests to be deployed from any Git repos
+  - '*'
+  destinations: # Allow applications to be deployed in all namespaces in the cluster
+  - namespace: "*"
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist: # Allow all cluster-scoped resources to be created
+  - group: "*"
+    kind: "*"
+{{- end -}}

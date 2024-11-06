@@ -1,0 +1,9 @@
+apiVersion: v2
+name: external-secrets
+description: External Secrets Operator
+type: application
+version: 0.9.7
+appVersion: "0.9.7"
+dependencies:
+  - name: external-secrets
+    version: 0.9.7
